@@ -4,14 +4,24 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class ProfileActivity extends Activity {
+
+    private TextView usernameTextView;
+    private TextView userEmailTextView;
+    private TextView userIdTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        usernameTextView = (TextView) findViewById(R.id.user_name_text_view);
+        userEmailTextView = (TextView) findViewById(R.id.user_email_text_view);
+        userIdTextView = (TextView) findViewById(R.id.user_id_text_view);
     }
 
 
