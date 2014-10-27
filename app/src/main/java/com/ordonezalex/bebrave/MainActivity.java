@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -36,25 +35,19 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings)
-        {
+        if (id == R.id.action_settings) {
             return true;
-        }
-        else if ( id == R.id.action_profile)
-        {
+        } else if (id == R.id.action_profile) {
             openProfile();
             return true;
         }
 
-            return super.onOptionsItemSelected(item);
-
+        return super.onOptionsItemSelected(item);
     }
 
+    private void openProfile() {
 
-
-    private void openProfile()
-    {
-        Intent intent = new Intent(MainActivity.this , ProfileActivity.class);
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
