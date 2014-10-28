@@ -36,8 +36,13 @@ public class MainActivity extends Activity {
 
                 try {
                     httpResponse = new CreateAlertsTask().execute(new Alert("0", "60", true)).get();
-                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                    // See http://tools.ietf.org/html/rfc7231#section-6
+                    if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
+
                         Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "Status code: " + httpResponse.getStatusLine().getStatusCode());
                     }
                 } catch (InterruptedException e) {
                     Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
