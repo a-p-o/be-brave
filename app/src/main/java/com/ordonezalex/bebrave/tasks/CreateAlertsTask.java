@@ -51,13 +51,9 @@ public class CreateAlertsTask extends AsyncTask<Alert, Void, HttpResponse> {
             return httpResponse;
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
-
-//            Toast.makeText(this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
             Log.e(TAG, e.toString());
         } catch (IOException e) {
             // TODO Auto-generated catch block
-
-//            Toast.makeText(this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
             Log.e(TAG, e.toString());
         } catch (Exception e) {
             Log.e(TAG, e.toString());
