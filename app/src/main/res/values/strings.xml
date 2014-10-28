@@ -14,4 +14,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_profile">ProfileActivity</string>
 
+    <!-- MainActivity -->
+    <string name="alert">Alert</string>
+    <string name="alert_created">Created alert</string>
+    <string name="alert_created_error">Could not create alert</string>
+
 </resources>
