@@ -10,6 +10,8 @@
         android:layout_width="170dp"
         android:layout_height="100dp"
         android:text="@string/alert"
+        android:hapticFeedbackEnabled="true"
+        android:soundEffectsEnabled="true"
         android:id="@+id/alert_button"/>
 
 </LinearLayout>
