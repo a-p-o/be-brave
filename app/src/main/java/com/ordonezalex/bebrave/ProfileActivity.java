@@ -49,6 +49,7 @@ public class ProfileActivity extends Activity {
         fields.add("Username");
         fields.add("OrganizationIdentifier");
         new Read().execute(fields);
+        
     }
 
 

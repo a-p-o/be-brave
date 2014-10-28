@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
 
                 try {
                     httpResponse = new CreateAlertsTask().execute(new Alert("0", "60", true)).get();
-
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
                     }
