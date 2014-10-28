@@ -10,22 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import com.ordonezalex.bebrave.tasks.CreateAlertsTask;
+import com.ordonezalex.bebrave.util.Alert;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.http.HttpResponse;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends Activity {
     public final static String TAG = "BeBrave";
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v0/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +32,21 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                createAlert();
+                HttpResponse httpResponse;
+
+                try {
+                    httpResponse = new CreateAlertsTask().execute(new Alert("0", "60", true)).get();
+
+                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                        Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (InterruptedException e) {
+                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.toString());
+                } catch (ExecutionException e) {
+                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.toString());
+                }
             }
         });
     }
@@ -80,37 +87,6 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
-    }
-
-    private void createAlert() {
-
-        // Create client
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(URL + "/alert");
-
-        try {
-            // Add parameters
-            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-            parameters.add(new BasicNameValuePair("SchoolId", "0"));
-            parameters.add(new BasicNameValuePair("Color", "50"));
-            parameters.add(new BasicNameValuePair("Enabled", "true"));
-            httpPost.setEntity(new UrlEncodedFormEntity(parameters));
-//            httpPost.addHeader("Accept", "application/json");
-
-            // Execute request
-            httpClient.execute(httpPost);
-
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-
-            Toast.makeText(this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, e.toString());
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-
-            Toast.makeText(this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, e.toString());
-        }
     }
 }
 
