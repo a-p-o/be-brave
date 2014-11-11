@@ -2,42 +2,110 @@ package com.ordonezalex.bebrave.util;
 
 public class Alert {
 
+    public static final long DEFAULT_ID = -1;
+    public static final School DEFAULT_SCHOOL = null;
+    public static final String DEFAULT_TITLE = null;
+    public static final int DEFAULT_COLOR = -1;
+    public static final int DEFAULT_PRIORITY = -1;
     public static final boolean DEFAULT_ENABLED = false;
-    public static final String DEFAULT_SCHOOL_ID = null;
-    public static final String DEFAULT_COLOR = null;
 
-    private boolean enabled = DEFAULT_ENABLED;
-    private String schoolId = DEFAULT_SCHOOL_ID;
-    private String color = DEFAULT_COLOR;
+    private long id;
+    private School school;
+    private String title;
+    private int color, priority;
+    private boolean enabled;
 
-    public Alert(String schoolId) {
-
-        this(schoolId, DEFAULT_COLOR, DEFAULT_ENABLED);
+    public Alert() {
+        this(DEFAULT_SCHOOL, DEFAULT_TITLE, DEFAULT_COLOR, DEFAULT_PRIORITY, DEFAULT_ENABLED);
     }
 
-    public Alert(String schoolId, String color) {
-
-        this(schoolId, color, DEFAULT_ENABLED);
+    public Alert(School school) {
+        this(school, DEFAULT_TITLE, DEFAULT_COLOR, DEFAULT_PRIORITY, DEFAULT_ENABLED);
     }
 
-    public Alert(String schoolId, String color, boolean enabled) {
+    public Alert(School school, String title) {
 
-        this.setSchoolId(schoolId);
+        this(school, title, DEFAULT_COLOR, DEFAULT_PRIORITY, DEFAULT_ENABLED);
+    }
+
+    public Alert(School school, String title, int color) {
+
+        this(school, title, color, DEFAULT_PRIORITY, DEFAULT_ENABLED);
+    }
+
+    public Alert(School school, String title, int color, int priority) {
+
+        this(school, title, color, priority, DEFAULT_ENABLED);
+    }
+
+    public Alert(School school, String title, int color, int priority, boolean enabled) {
+
+        this.setId(DEFAULT_ID);
+        this.setSchool(school);
+        this.setTitle(title);
         this.setColor(color);
-
-        if (enabled) {
-            this.enable();
-        }
+        this.setPriority(priority);
+        this.setEnabled(enabled);
     }
 
-    public void setSchoolId(String schoolId) {
+    public long getId() {
 
-        this.schoolId = schoolId;
+        return id;
     }
 
-    public void setColor(String color) {
+    public void setId(long id) {
+
+        this.id = id;
+    }
+
+    public School getSchool() {
+
+        return school;
+    }
+
+    public void setSchool(School school) {
+
+        this.school = school;
+    }
+
+    public String getTitle() {
+
+        return title;
+    }
+
+    public void setTitle(String title) {
+
+        this.title = title;
+    }
+
+    public int getColor() {
+
+        return color;
+    }
+
+    public void setColor(int color) {
 
         this.color = color;
+    }
+
+    public int getPriority() {
+
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+
+        this.priority = priority;
+    }
+
+    public boolean isEnabled() {
+
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+
+        this.enabled = enabled;
     }
 
     public void enable() {
@@ -48,20 +116,5 @@ public class Alert {
     public void disable() {
 
         this.enabled = false;
-    }
-
-    public String getSchoolId() {
-
-        return this.schoolId;
-    }
-
-    public String getColor() {
-
-        return this.color;
-    }
-
-    public boolean isEnabled() {
-
-        return this.enabled;
     }
 }
