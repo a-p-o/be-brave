@@ -27,14 +27,35 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Start the background location service here for testing purposes
-        startService(new Intent(LocationService.class.getName()));
+
 
         Button alertButton = (Button) findViewById(R.id.alert_button);
+        Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
+        Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
-        alertButton.setOnClickListener(new View.OnClickListener() {
+        shareWalkButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               //Start the background location service here for testing purposes
+               startService(new Intent(LocationService.class.getName()));
+
+            }
+        });
+
+        stopWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Stop the background location service here for testing purposes
+                stopService(new Intent(LocationService.class.getName()));
+
+            }
+        });
+
+            alertButton.setOnClickListener(new View.OnClickListener()
+
+            {
+                @Override
+                public void onClick (View view){
 
                 HttpResponse httpResponse;
 
@@ -56,10 +77,12 @@ public class MainActivity extends Activity {
                     Log.e(TAG, e.toString());
                 }
             }
-        });
-    }
+            }
 
-    @Override
+            );
+        }
+
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
