@@ -27,18 +27,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         Button alertButton = (Button) findViewById(R.id.alert_button);
         Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
         Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
         shareWalkButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               //Start the background location service here for testing purposes
-               startService(new Intent(LocationService.class.getName()));
-
+            @Override
+            public void onClick(View view) {
+                //Start the background location service here for testing purposes
+                startService(new Intent(LocationService.class.getName()));
             }
         });
 
@@ -47,20 +44,18 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 //Stop the background location service here for testing purposes
                 stopService(new Intent(LocationService.class.getName()));
-
             }
         });
 
-            alertButton.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick (View view){
+        alertButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
                 HttpResponse httpResponse;
 
                 try {
                     httpResponse = new CreateAlertsTask().execute(new Alert("0", "60", true)).get();
+
                     // See http://tools.ietf.org/html/rfc7231#section-6
                     if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
 
@@ -77,12 +72,10 @@ public class MainActivity extends Activity {
                     Log.e(TAG, e.toString());
                 }
             }
-            }
+        });
+    }
 
-            );
-        }
-
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
