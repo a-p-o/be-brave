@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ordonezalex.bebrave.services.LocationService;
 import com.ordonezalex.bebrave.tasks.CreateAlertsTask;
 import com.ordonezalex.bebrave.util.Alert;
 
@@ -25,6 +26,9 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Start the background location service here for testing purposes
+        startService(new Intent(LocationService.class.getName()));
 
         Button alertButton = (Button) findViewById(R.id.alert_button);
 
