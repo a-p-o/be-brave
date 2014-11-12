@@ -17,4 +17,7 @@
     <!-- # ProfileActivity -->
     <string name="title_activity_profile">Profile Activity</string>
 
+    <!-- # AlertActivity -->
+    <string name="title_activity_alert">Alert Activity</string>
+
 </resources>
