@@ -31,7 +31,7 @@ public class AlertActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_alerts);
 
         //initialize the text views that we are going to work with
 
@@ -76,10 +76,7 @@ public class AlertActivity extends Activity {
     {
         @Override
         protected void onPostExecute(ArrayList<String> result) {
-            for(int i =0; i < result.size();i++)
-            {
-                alertListView.addFooterView(alertListView, result.get(i), true);
-            }
+                alertListView.addFooterView(alertListView, result.get(0), true);
             super.onPostExecute(result);
         }
 
@@ -90,6 +87,10 @@ public class AlertActivity extends Activity {
                 ArrayList<String> results = new ArrayList<String>();
                 results.add(json.getString(params[0].get(0)));
                 results.add(json.getString(params[0].get(1)));
+                results.add(json.getString(params[0].get(2)));
+                results.add(json.getString(params[0].get(3)));
+                results.add(json.getString(params[0].get(4)));
+                results.add(json.getString(params[0].get(5)));
                 return results;
             } catch (IOException e) {
                 e.printStackTrace();
