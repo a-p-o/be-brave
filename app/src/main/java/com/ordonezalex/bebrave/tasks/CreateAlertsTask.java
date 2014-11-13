@@ -40,8 +40,8 @@ public class CreateAlertsTask extends AsyncTask<Alert, Void, HttpResponse> {
         try {
             // Add parameters
             List<NameValuePair> httpParameters = new ArrayList<NameValuePair>();
-            httpParameters.add(new BasicNameValuePair("SchoolId", alert.getSchoolId()));
-            httpParameters.add(new BasicNameValuePair("Color", alert.getColor()));
+           // httpParameters.add(new BasicNameValuePair("SchoolId", alert.getSchoolId()));
+           // httpParameters.add(new BasicNameValuePair("Color", alert.getColor()));
             httpParameters.add(new BasicNameValuePair("Enabled", "" + alert.isEnabled()));
             httpPost.setEntity(new UrlEncodedFormEntity(httpParameters));
 

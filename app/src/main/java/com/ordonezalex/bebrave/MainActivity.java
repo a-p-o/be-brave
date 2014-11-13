@@ -60,15 +60,15 @@ public class MainActivity extends Activity {
 
                 // Get Android school
                 School school = new School();
-                school.setId(4);
+                school.setId(1);
 
                 // Get sent from alex alert
                 Alert alert = new Alert();
-                alert.setId(5);
+                alert.setId(1);
 
                 // Get Help me status
                 Status status = new Status();
-                status.setId(3);
+                status.setId(1);
 
                 // Get textUser User
                 User user = new User();
