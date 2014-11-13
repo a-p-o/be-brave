@@ -8,13 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.ordonezalex.bebrave.services.LocationService;
-import com.ordonezalex.bebrave.tasks.CreateAlertsTask;
+import com.ordonezalex.bebrave.tasks.CreateReportsTask;
 import com.ordonezalex.bebrave.util.Alert;
-
-import org.apache.http.HttpResponse;
+import com.ordonezalex.bebrave.util.Report;
+import com.ordonezalex.bebrave.util.School;
+import com.ordonezalex.bebrave.util.Status;
+import com.ordonezalex.bebrave.util.User;
 
 import java.util.concurrent.ExecutionException;
 
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
         Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
         Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
+        // Start "Share Walk" buttons
         shareWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,33 +48,64 @@ public class MainActivity extends Activity {
                 stopService(new Intent(LocationService.class.getName()));
             }
         });
+        // Stop "Share Walk" buttons
 
+        // Start Alert button
         alertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                HttpResponse httpResponse;
+                // Start using Spring
+                String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
+
+                // Get Android school
+                School school = new School();
+                school.setId(4);
+
+                // Get sent from alex alert
+                Alert alert = new Alert();
+                alert.setId(5);
+
+                // Get Help me status
+                Status status = new Status();
+                status.setId(3);
+
+                // Get textUser User
+                User user = new User();
+                user.setId(1);
+
+                Report report = new Report();
+                report.setUser(user);
+                report.setAlert(alert);
+                report.setStatus(status);
+                report.setSchool(school);
+
+                // Stop using Spring
 
                 try {
-                    httpResponse = new CreateAlertsTask().execute(new Alert("0", "60", true)).get();
+                     String response = new CreateReportsTask().execute(report).get();
+
+                    Log.wtf(TAG, response);
 
                     // See http://tools.ietf.org/html/rfc7231#section-6
-                    if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
+//                    if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
 
-                        Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, "Status code: " + httpResponse.getStatusLine().getStatusCode());
-                    }
+//                        Log.i(TAG, result);
+//                        Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+//                        Log.i(TAG, "Status code: " + httpResponse.getStatusLine().getStatusCode());
+//                    }
                 } catch (InterruptedException e) {
-                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.toString());
                 } catch (ExecutionException e) {
-                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.toString());
                 }
             }
         });
+        // Stop Alert button
     }
 
     @Override

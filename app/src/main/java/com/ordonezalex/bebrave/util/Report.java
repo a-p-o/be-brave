@@ -12,96 +12,110 @@ public class Report {
     public static final User DEFAULT_USER = null;
     public static final Alert DEFAULT_ALERT = null;
     public static final Status DEFAULT_STATUS = null;
-    public static final Location DEFAULT_LOCATION = null;
-    public static final List<Location> DEFAULT_LOCATIONS = null;
+    public static final School DEFAULT_SCHOOL = null;
+//    public static final Location DEFAULT_LOCATION = null;
+//    public static final List<Location> DEFAULT_LOCATIONS = null;
 
-    private long id;
-    private User user;
-    private Alert alert;
-    private Status status;
+    private long ID;
+    private User User;
+    private Alert Alert;
+    private Status Status;
+    private School School;
     private List<Location> locations = new ArrayList<Location>();
 
     public Report() {
 
-        this(DEFAULT_USER, DEFAULT_ALERT, DEFAULT_STATUS, DEFAULT_LOCATION);
+        this(DEFAULT_USER, DEFAULT_ALERT, DEFAULT_STATUS, DEFAULT_SCHOOL);
     }
 
     public Report(User user) {
 
-        this(user, DEFAULT_ALERT, DEFAULT_STATUS, DEFAULT_LOCATION);
+        this(user, DEFAULT_ALERT, DEFAULT_STATUS, DEFAULT_SCHOOL);
     }
 
     public Report(User user, Alert alert) {
 
-        this(user, alert, DEFAULT_STATUS, DEFAULT_LOCATION);
+        this(user, alert, DEFAULT_STATUS, DEFAULT_SCHOOL);
     }
 
     public Report(User user, Alert alert, Status status) {
 
-        this(user, alert, status, DEFAULT_LOCATION);
+        this(user, alert, status, DEFAULT_SCHOOL);
     }
 
-    public Report(User user, Alert alert, Status status, Location location) {
+    public Report(User user, Alert alert, Status status, School school) {
 
         this.setId(DEFAULT_ID);
         this.setUser(user);
         this.setAlert(alert);
         this.setStatus(status);
-        this.addLocation(location);
+        this.setSchool(school);
+//        this.addLocation(location);
     }
 
     public long getId() {
 
-        return id;
+        return ID;
     }
 
     public void setId(long id) {
 
-        this.id = id;
+        this.ID = id;
     }
 
     public User getUser() {
 
-        return user;
+        return User;
     }
 
     public void setUser(User user) {
 
-        this.user = user;
+        this.User = user;
     }
 
     public Alert getAlert() {
 
-        return alert;
+        return Alert;
     }
 
     public void setAlert(Alert alert) {
 
-        this.alert = alert;
+        this.Alert = alert;
     }
 
     public Status getStatus() {
 
-        return status;
+        return Status;
     }
 
     public void setStatus(Status status) {
 
-        this.status = status;
+        this.Status = status;
     }
 
-    public List<Location> getLocations() {
+    public School getSchool() {
 
-        return locations;
+        return School;
     }
 
-    public void addLocation(Location location) {
+    public void setSchool(School school) {
 
-        locations.add(location);
+        this.School = school;
     }
 
-    public void setLocations(List<Location> locations) {
-
-        this.locations = locations;
-    }
+//    public Location[] getLocations() {
+//        Location[] emptyLocations = new Location[]{};
+//
+//        return emptyLocations;
+//    }
+//
+//    public void addLocation(Location location) {
+//
+//        locations.add(location);
+//    }
+//
+//    public void setLocations(List<Location> locations) {
+//
+//        this.locations = locations;
+//    }
 }
