@@ -20,6 +20,10 @@
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile">
         </activity>
+        <activity
+            android:name=".AlertActivity"
+            android:label="@string/title_activity_alert">
+        </activity>
         <!--Location Service -->
         <service
             android:name=".services.LocationService"
