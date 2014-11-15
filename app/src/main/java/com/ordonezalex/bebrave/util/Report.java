@@ -16,7 +16,6 @@ public class Report {
 //    public static final Location DEFAULT_LOCATION = null;
 //    public static final List<Location> DEFAULT_LOCATIONS = null;
 
-    private long ID;
     private User User;
     private Alert Alert;
     private Status Status;
@@ -45,22 +44,12 @@ public class Report {
 
     public Report(User user, Alert alert, Status status, School school) {
 
-        this.setId(DEFAULT_ID);
+       // this.setId(DEFAULT_ID);
         this.setUser(user);
         this.setAlert(alert);
         this.setStatus(status);
         this.setSchool(school);
 //        this.addLocation(location);
-    }
-
-    public long getId() {
-
-        return ID;
-    }
-
-    public void setId(long id) {
-
-        this.ID = id;
     }
 
     public User getUser() {
