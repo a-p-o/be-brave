@@ -79,11 +79,10 @@ public class MainActivity extends Activity {
                 report.setAlert(alert);
                 report.setStatus(status);
                 report.setSchool(school);
-
                 // Stop using Spring
 
                 try {
-                     String response = new CreateReportsTask().execute(report).get();
+                    String response = new CreateReportsTask().execute(report).get();
 
                     Log.wtf(TAG, response);
 
@@ -113,13 +112,6 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-//        menu.findItem(R.id.action_profile).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            public boolean onMenuItemClick(MenuItem item) {
-//                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-//                return true;
-//            }
-//        });
-
         return true;
     }
 
@@ -130,6 +122,7 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            openSettings();
             return true;
         } else if (id == R.id.action_profile) {
             openProfile();
@@ -142,6 +135,13 @@ public class MainActivity extends Activity {
     private void openProfile() {
 
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+    }
+
+    private void openSettings() {
+
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
