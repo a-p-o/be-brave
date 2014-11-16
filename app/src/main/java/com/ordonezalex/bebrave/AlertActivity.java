@@ -3,8 +3,15 @@ package com.ordonezalex.bebrave;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.ordonezalex.bebrave.tasks.GetAlertsTask;
+import com.ordonezalex.bebrave.util.Alert;
+import com.ordonezalex.bebrave.util.School;
+import com.ordonezalex.bebrave.util.Status;
+import com.ordonezalex.bebrave.util.User;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,86 +26,52 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 public class AlertActivity extends Activity {
 
     private ListView alertListView;
-    private HttpClient client;
-    private JSONObject json;
+    private Alert[] alerts;
+    private String[] titles;
     private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert";
+    private long userSchool = 4;//will be pulled from user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerts);
 
-        //initialize the text views that we are going to work with
-
-        //set up the http client for rest requests
-        client = new DefaultHttpClient();
-        ArrayList<String> fields = new ArrayList<String>();
-        fields.add("ID");
-        fields.add("School");
-        fields.add("Title");
-        fields.add("Color");
-        fields.add("Priority");
-        fields.add("Enabled");
-        new Read().execute(fields);
+        alertListView = (ListView) findViewById(R.id.alerts_listView);
+        populateAlerts();
 
     }
-    
-    public JSONObject alertInformation(String username) throws ClientProtocolException, IOException, JSONException
-    {
-        StringBuilder url = new StringBuilder(URL);
 
-        HttpGet get = new HttpGet(url.toString());
-        get.setHeader("Content-Type" , "application/json");
-        HttpResponse response = client.execute(get);
-        int status = response.getStatusLine().getStatusCode();
+    private void populateAlerts() {
+        alerts = new Alert[0];
 
-        if ( status == 200)
-        {
-            HttpEntity entity = response.getEntity();
-            String data = EntityUtils.toString(entity);
-            JSONArray alertData = new JSONArray(data);
-            JSONObject alert = alertData.getJSONObject(0);
-            return alert;
-        }
-        else
-        {
-            Toast.makeText(this, status, Toast.LENGTH_LONG);
-            return null;
-        }
-    }
-
-    public class Read extends AsyncTask<ArrayList<String>,Integer , ArrayList<String>>
-    {
-        @Override
-        protected void onPostExecute(ArrayList<String> result) {
-                alertListView.addFooterView(alertListView, result.get(0), true);
-            super.onPostExecute(result);
+        try {
+            alerts = new GetAlertsTask().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
 
-        @Override
-        protected ArrayList<String> doInBackground(ArrayList<String>... params) {
-            try {
-                json = alertInformation("user");
-                ArrayList<String> results = new ArrayList<String>();
-                results.add(json.getString(params[0].get(0)));
-                results.add(json.getString(params[0].get(1)));
-                results.add(json.getString(params[0].get(2)));
-                results.add(json.getString(params[0].get(3)));
-                results.add(json.getString(params[0].get(4)));
-                results.add(json.getString(params[0].get(5)));
-                return results;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+        titles = new String[alerts.length];
+        int count = 0;
+
+        //Filter out alerts from other schools
+        for(int i = 0; i < alerts.length; i++){
+            if(alerts[i].getSchool().getId() == userSchool){
+                titles[count] = alerts[i].getTitle();
+                count ++;
             }
-            return null;
         }
+
+        //add alerts to adapter
+        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listview_alerts, titles);
+        alertListView.setAdapter(adapter);
     }
 }
 

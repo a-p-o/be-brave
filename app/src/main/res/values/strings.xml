@@ -21,6 +21,8 @@
     <string name="title_activity_alert">Alert Activity</string>
 
     <!-- # SettingsActivity -->
+    <string name="title_activity_settings">Settings Activity</string>
+    
     <!-- ## Security -->
     <string name="pref_header_security">Security</string>
     <string name="pref_pin">Security PIN</string>
