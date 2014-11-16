@@ -20,4 +20,7 @@
     <!-- # AlertActivity -->
     <string name="title_activity_alert">Alert Activity</string>
 
+    <!--# SettingsActivity -->
+    <string name="title_activity_settings">Settings Activity</string>
+
 </resources>

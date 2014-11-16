@@ -1,5 +1,7 @@
 package com.ordonezalex.bebrave.util;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Alert {
 
     public static final long DEFAULT_ID = -1;
@@ -9,11 +11,18 @@ public class Alert {
     public static final int DEFAULT_PRIORITY = -1;
     public static final boolean DEFAULT_ENABLED = false;
 
-    private long id;
-    private School school;
-    private String title;
-    private int color, priority;
-    private boolean enabled;
+    @JsonProperty("ID")
+    private long ID;
+    @JsonProperty("School")
+    private School School;
+    @JsonProperty("Title")
+    private String Title;
+    @JsonProperty("Color")
+    private int Color;
+    @JsonProperty("Priority")
+    private int Priority;
+    @JsonProperty("Enabled")
+    private boolean Enabled;
 
     public Alert() {
         this(DEFAULT_SCHOOL, DEFAULT_TITLE, DEFAULT_COLOR, DEFAULT_PRIORITY, DEFAULT_ENABLED);
@@ -40,7 +49,7 @@ public class Alert {
 
     public Alert(School school, String title, int color, int priority, boolean enabled) {
 
-        this.setId(DEFAULT_ID);
+        this.setID(DEFAULT_ID);
         this.setSchool(school);
         this.setTitle(title);
         this.setColor(color);
@@ -48,73 +57,73 @@ public class Alert {
         this.setEnabled(enabled);
     }
 
-    public long getId() {
+    public long getID() {
 
-        return id;
+        return ID;
     }
 
-    public void setId(long id) {
+    public void setID(long ID) {
 
-        this.id = id;
+        this.ID = ID;
     }
 
     public School getSchool() {
 
-        return school;
+        return School;
     }
 
     public void setSchool(School school) {
 
-        this.school = school;
+        this.School = school;
     }
 
     public String getTitle() {
 
-        return title;
+        return Title;
     }
 
     public void setTitle(String title) {
 
-        this.title = title;
+        this.Title = title;
     }
 
     public int getColor() {
 
-        return color;
+        return Color;
     }
 
     public void setColor(int color) {
 
-        this.color = color;
+        this.Color = color;
     }
 
     public int getPriority() {
 
-        return priority;
+        return Priority;
     }
 
     public void setPriority(int priority) {
 
-        this.priority = priority;
+        this.Priority = priority;
     }
 
     public boolean isEnabled() {
 
-        return enabled;
+        return Enabled;
     }
 
     public void setEnabled(boolean enabled) {
 
-        this.enabled = enabled;
+        this.Enabled = enabled;
     }
 
     public void enable() {
 
-        this.enabled = true;
+        this.Enabled = true;
     }
 
     public void disable() {
 
-        this.enabled = false;
+        this.Enabled = false;
     }
 }

@@ -1,13 +1,21 @@
 package com.ordonezalex.bebrave.util;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class School {
     public static final long DEFAULT_ID = -1;
     public static final String DEFAULT_EMAIL_DOMAIN = null;
     public static final String DEFAULT_ADDRESS = null;
     public static final String DEFAULT_PHONE_NUMBER = null;
 
-    private long id;
-    private String emailDomain, address, phoneNumber;
+    @JsonProperty("ID")
+    private long ID;
+    @JsonProperty("EmailDomain")
+    private String EmailDomain;
+    @JsonProperty("Address")
+    private String Address;
+    @JsonProperty("PhoneNumber")
+    private String PhoneNumber;
 
     public School() {
 
@@ -34,41 +42,41 @@ public class School {
 
     public long getId() {
 
-        return id;
+        return ID;
     }
 
     public void setId(long id) {
 
-        this.id = id;
+        this.ID = id;
     }
 
     public String getEmailDomain() {
 
-        return emailDomain;
+        return EmailDomain;
     }
 
     public void setEmailDomain(String emailDomain) {
 
-        this.emailDomain = emailDomain;
+        this.EmailDomain = emailDomain;
     }
 
     public String getAddress() {
 
-        return address;
+        return Address;
     }
 
     public void setAddress(String address) {
 
-        this.address = address;
+        this.Address = address;
     }
 
     public String getPhoneNumber() {
 
-        return phoneNumber;
+        return PhoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
 
-        this.phoneNumber = phoneNumber;
+        this.PhoneNumber = phoneNumber;
     }
 }

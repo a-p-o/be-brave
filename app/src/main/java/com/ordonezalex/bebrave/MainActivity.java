@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 
                 // Get sent from alex alert
                 Alert alert = new Alert();
-                alert.setId(1);
+                alert.setID(1);
 
                 // Get Help me status
                 Status status = new Status();
@@ -141,7 +141,7 @@ public class MainActivity extends Activity {
 
     private void openProfile() {
 
-        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        Intent intent = new Intent(MainActivity.this, AlertActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
