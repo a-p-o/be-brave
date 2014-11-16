@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,7 +34,6 @@ public class GetAlertsTask extends AsyncTask<Void, Void, Alert[]> {
         // Make the HTTP GET request, marshaling the response from JSON to an array of Events
         ResponseEntity<Alert[]> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, requestEntity, Alert[].class);
         Alert[] alert = responseEntity.getBody();
-
 
         return alert;
     }
