@@ -20,4 +20,11 @@
     <!-- # AlertActivity -->
     <string name="title_activity_alert">Alert Activity</string>
 
+    <!-- # SettingsActivity -->
+    <!-- ## Security -->
+    <string name="pref_header_security">Security</string>
+    <string name="pref_pin">Security PIN</string>
+    <string name="pref_pin_summary">Lets you disable accidental reports</string>
+    <string name="pref_default_pin">0000</string>
+
 </resources>
