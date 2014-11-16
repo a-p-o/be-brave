@@ -25,10 +25,12 @@ public class Alert {
     private boolean Enabled;
 
     public Alert() {
+
         this(DEFAULT_SCHOOL, DEFAULT_TITLE, DEFAULT_COLOR, DEFAULT_PRIORITY, DEFAULT_ENABLED);
     }
 
     public Alert(School school) {
+
         this(school, DEFAULT_TITLE, DEFAULT_COLOR, DEFAULT_PRIORITY, DEFAULT_ENABLED);
     }
 
@@ -125,5 +127,22 @@ public class Alert {
     public void disable() {
 
         this.Enabled = false;
+    }
+
+    @Override
+    public String toString() {
+
+        String s;
+
+        s = "{" + "\n"
+                + "id: " + getID() + "\n"
+                + "school: " + getSchool() + "\n"
+                + "title: " + getTitle() + "\n"
+                + "color: " + getColor() + "\n"
+                + "priority: " + getPriority() + "\n"
+                + "enabled: " + isEnabled() + "\n"
+                + "}" + "\n";
+
+        return s;
     }
 }

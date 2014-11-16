@@ -79,4 +79,19 @@ public class School {
 
         this.PhoneNumber = phoneNumber;
     }
+
+    @Override
+    public String toString() {
+
+        String s;
+
+        s = "{" + "\n"
+                + "id: " + getId() + "\n "
+                + "emailDomain: " + getEmailDomain() + "\n"
+                + "address: " + getAddress() + "\n"
+                + "phoneNumber: " + getPhoneNumber() + "\n"
+                + "}" + "\n";
+
+        return s;
+    }
 }
