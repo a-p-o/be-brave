@@ -3,6 +3,7 @@ package com.ordonezalex.bebrave;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -163,7 +164,11 @@ public class MainActivity extends Activity {
         } else if (id == R.id.action_profile) {
             openProfile();
             return true;
+        }else if (id == R.id.action_alert) {
+            openProfile();
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -178,6 +183,12 @@ public class MainActivity extends Activity {
     private void openSettings() {
 
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+    }
+    private void openAlert() {
+
+        Intent intent = new Intent(MainActivity.this, AlertActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
