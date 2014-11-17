@@ -37,7 +37,7 @@ proguard/
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, PhpStorm
 
-/*.iml
+*.iml
 
 ## Directory-based project format:
 .idea/
