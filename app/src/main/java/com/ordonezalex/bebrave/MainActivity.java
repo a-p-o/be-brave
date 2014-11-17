@@ -142,8 +142,10 @@ public class MainActivity extends Activity {
 
     public void cancelReportDialog()
     {
+        Log.i(TAG, "Creating cancel report dialog.");
         DialogFragment newFragment = new CancelReportDialogFragment();
         newFragment.show(getFragmentManager(), "CancelReport");
+        Log.i(TAG, "Showed cancel report dialog.");
     }
 
     //sends a report via asynctask
@@ -188,24 +190,18 @@ public class MainActivity extends Activity {
     }
 
     //method used to update the progress of the button
-    public void UpdateButtonProgress()
+    public void updateButtonProgress()
     {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //progress is used instead of alert.getProgress to avoid recurring loops after progress is at 100
-                if(progress == 100)
-                {
+                if (progress == 100) {
                     progress+=5;
                     pressedUp=false;
-                    sendReport();
                     cancelReportDialog();
                     Log.i(TAG, "Loading done");
-                    Toast.makeText(getApplicationContext(), "Report Sent", Toast.LENGTH_SHORT).show();
-
-                }
-                else
-                {
+                } else {
                     reportButton.setProgress(reportButton.getProgress() + 5);
                     progress+=5;
                 }
@@ -216,13 +212,22 @@ public class MainActivity extends Activity {
 
     class ProgressUpTask extends AsyncTask<Void, Void ,Void>
     {
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            if (progress >= 100) {
+                sendReport();
+                Toast.makeText(getApplicationContext(), "Report Sent", Toast.LENGTH_SHORT).show();
+            }
+        }
 
         @Override
         protected Void doInBackground(Void... Voids) {
-            while (pressedUp)
-            {
+            while (pressedUp) {
                // Log.i(TAG, "THE BUTTON IS PRESSED");
-                UpdateButtonProgress();
+                updateButtonProgress();
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
