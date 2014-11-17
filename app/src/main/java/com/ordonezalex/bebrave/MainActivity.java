@@ -2,6 +2,7 @@ package com.ordonezalex.bebrave;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.ordonezalex.bebrave.services.LocationService;
@@ -24,28 +26,31 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends Activity {
     public final static String TAG = "BeBrave";
 
+    private ActionProcessButton alertButton;
+    private Button shareWalkButton;
+    private Button stopWalkButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionProcessButton alertButton = (ActionProcessButton) findViewById(R.id.alert_button);
-        Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
-        Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
+        alertButton = (ActionProcessButton) findViewById(R.id.alert_button);
+        shareWalkButton = (Button) findViewById(R.id.share_walk_button);
+        stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
         // Start Alert button
         alertButton.setOnTouchListener(new View.OnTouchListener() {
-            ActionProcessButton alertButton = (ActionProcessButton) findViewById(R.id.alert_button);
 
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public boolean onTouch(View view, MotionEvent event) {
 
-                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        alertButton.setPressed(true);
+                        view.setPressed(true);
 
-                        alertButton.setProgress(alertButton.getProgress() + 10);
+                        new ProgressUpTask().execute();
 
                         break;
                     case MotionEvent.ACTION_UP:
@@ -66,7 +71,13 @@ public class MainActivity extends Activity {
         });
 
         alertButton.setMode(ActionProcessButton.Mode.PROGRESS);
-        alertButton.setProgress(0);
+//        alertButton.setProgress(0);
+
+        while (alertButton.isPressed()) {
+            Log.i(TAG, "Alert button is pressed.");
+
+            alertButton.setProgress(alertButton.getProgress() + 10);
+        }
 
         alertButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +112,7 @@ public class MainActivity extends Activity {
                 try {
                     String response = new CreateReportsTask().execute(report).get();
 
-                    Log.wtf(TAG, response);
+//                    Log.wtf(TAG, response);
 
                     // See http://tools.ietf.org/html/rfc7231#section-6
 //                    if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
@@ -181,5 +192,39 @@ public class MainActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
+
+    class ProgressUpTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            while (alertButton.isPressed()) {
+                if (alertButton.getProgress() >= 100) {
+                    Toast.makeText(getApplicationContext(), "You made it!", Toast.LENGTH_LONG).show();
+                    Log.i(TAG, "You made it!");
+                } else {
+
+                    Log.i(TAG, "Progress is " + alertButton.getProgress());
+
+                    alertButton.setProgress(alertButton.getProgress() + 10);
+                }
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+                Thread.sleep(100L);
+            } catch (InterruptedException android) {
+                Log.wtf(TAG, android);
+            }
+
+            return null;
+        }
+    }
 }
+
 
