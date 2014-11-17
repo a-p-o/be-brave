@@ -3,8 +3,6 @@ package com.ordonezalex.bebrave;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.dd.processbutton.iml.SubmitProcessButton;
 import com.ordonezalex.bebrave.dialogs.CancelReportDialogFragment;
 import com.ordonezalex.bebrave.services.LocationService;
@@ -31,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends Activity {
     public final static String TAG = "BeBrave";
 
-    private SubmitProcessButton alertButton;
+    private SubmitProcessButton reportButton;
     private Button shareWalkButton;
     private Button stopWalkButton;
     //booleans used for the progress button actions
@@ -44,32 +41,31 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        alertButton = (SubmitProcessButton) findViewById(R.id.alert_button);
+        reportButton = (SubmitProcessButton) findViewById(R.id.report_button);
         shareWalkButton = (Button) findViewById(R.id.share_walk_button);
         stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
         // Start Alert button
-        alertButton.setOnTouchListener(new View.OnTouchListener() {
+        reportButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
 
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        Log.i(TAG,"PRESSED" );
-                        if(pressedUp == false)
-                        {
+                        Log.i(TAG, "PRESSED");
+                        if (pressedUp == false) {
                             pressedUp = true;
                             new ProgressUpTask().execute();
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        Log.i(TAG,"LET GO" );
+                        Log.i(TAG, "LET GO");
                         //reset the progress of the button
                         progress = 0;
                         pressedUp = false;
-                        alertButton.setProgress(0);
-                        alertButton.setBackgroundColor(getResources().getColor(R.color.blue_normal));
+                        reportButton.setProgress(0);
+                        reportButton.setBackgroundColor(getResources().getColor(R.color.blue_normal));
                         break;
                 }
                 return true;
@@ -210,7 +206,7 @@ public class MainActivity extends Activity {
                 }
                 else
                 {
-                    alertButton.setProgress(alertButton.getProgress() + 5);
+                    reportButton.setProgress(reportButton.getProgress() + 5);
                     progress+=5;
                 }
             }

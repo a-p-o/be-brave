@@ -13,7 +13,7 @@
         android:text="@string/report"
         android:hapticFeedbackEnabled="true"
         android:soundEffectsEnabled="true"
-        android:id="@+id/alert_button"
+        android:id="@+id/report_button"
         android:textColor="@android:color/white"
         custom:colorComplete="@color/green_complete"
         custom:colorNormal="@color/blue_normal"
