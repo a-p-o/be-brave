@@ -32,24 +32,6 @@ public class MainActivity extends Activity {
         Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
         Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
-        // Start "Share Walk" buttons
-        shareWalkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Start the background location service here for testing purposes
-                startService(new Intent(LocationService.class.getName()));
-            }
-        });
-
-        stopWalkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Stop the background location service here for testing purposes
-                stopService(new Intent(LocationService.class.getName()));
-            }
-        });
-        // Stop "Share Walk" buttons
-
         // Start Alert button
         alertButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +86,26 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
         // Stop Alert button
+
+        // Start "Share Walk" buttons
+        shareWalkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Start the background location service here for testing purposes
+                startService(new Intent(LocationService.class.getName()));
+            }
+        });
+
+        stopWalkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Stop the background location service here for testing purposes
+                stopService(new Intent(LocationService.class.getName()));
+            }
+        });
+        // Stop "Share Walk" buttons
     }
 
     @Override
