@@ -1,6 +1,7 @@
 package com.ordonezalex.bebrave;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.nfc.Tag;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.dd.processbutton.iml.SubmitProcessButton;
+import com.ordonezalex.bebrave.dialogs.CancelReportDialogFragment;
 import com.ordonezalex.bebrave.services.LocationService;
 import com.ordonezalex.bebrave.tasks.CreateReportsTask;
 import com.ordonezalex.bebrave.util.Alert;
@@ -142,6 +144,12 @@ public class MainActivity extends Activity {
         this.startActivity(intent);
     }
 
+    public void cancelReportDialog()
+    {
+        DialogFragment newFragment = new CancelReportDialogFragment();
+        newFragment.show(getFragmentManager(), "CancelReport");
+    }
+
     //sends a report via asynctask
     private void sendReport()
     {
@@ -195,6 +203,7 @@ public class MainActivity extends Activity {
                     progress+=5;
                     pressedUp=false;
                     sendReport();
+                    cancelReportDialog();
                     Log.i(TAG, "Loading done");
                     Toast.makeText(getApplicationContext(), "Report Sent", Toast.LENGTH_SHORT).show();
 
