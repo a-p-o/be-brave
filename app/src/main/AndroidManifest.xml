@@ -44,6 +44,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ordonezalex.bebrave.MainActivity"/>
         </activity>
+        <activity
+            android:name="com.ordonezalex.bebrave.LoginActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.ordonezalex.bebrave.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ordonezalex.bebrave.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>
