@@ -10,7 +10,7 @@
     <com.dd.processbutton.iml.SubmitProcessButton
         android:layout_width="170dp"
         android:layout_height="100dp"
-        android:text="@string/alert"
+        android:text="@string/report"
         android:hapticFeedbackEnabled="true"
         android:soundEffectsEnabled="true"
         android:id="@+id/alert_button"
