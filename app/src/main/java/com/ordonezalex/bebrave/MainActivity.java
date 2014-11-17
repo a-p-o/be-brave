@@ -2,6 +2,7 @@ package com.ordonezalex.bebrave;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
     private ActionProcessButton alertButton;
     private Button shareWalkButton;
     private Button stopWalkButton;
+    private boolean pressedUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,24 +50,18 @@ public class MainActivity extends Activity {
 
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        view.setPressed(true);
-
-                        new ProgressUpTask().execute();
-
+                        Log.i(TAG,"PRESSED" );
+                        if(pressedUp == false)
+                        {
+                            pressedUp = true;
+                            new ProgressUpTask().execute();
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_OUTSIDE:
-                        view.setPressed(false);
-
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
+                        Log.i(TAG,"LET GO" );
+                        pressedUp = false;
                         break;
                 }
-
                 return true;
             }
         });
@@ -73,67 +69,59 @@ public class MainActivity extends Activity {
         alertButton.setMode(ActionProcessButton.Mode.PROGRESS);
 //        alertButton.setProgress(0);
 
-        while (alertButton.isPressed()) {
-            Log.i(TAG, "Alert button is pressed.");
-
-            alertButton.setProgress(alertButton.getProgress() + 10);
-        }
-
-        alertButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Start using Spring
-                String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
-
-                // Get Android school
-                School school = new School();
-                school.setId(1);
-
-                // Get sent from alex alert
-                Alert alert = new Alert();
-                alert.setID(1);
-
-                // Get Help me status
-                Status status = new Status();
-                status.setId(1);
-
-                // Get textUser User
-                User user = new User();
-                user.setId(1);
-
-                Report report = new Report();
-                report.setUser(user);
-                report.setAlert(alert);
-                report.setStatus(status);
-                report.setSchool(school);
-                // Stop using Spring
-
-                try {
-                    String response = new CreateReportsTask().execute(report).get();
-
-//                    Log.wtf(TAG, response);
-
-                    // See http://tools.ietf.org/html/rfc7231#section-6
-//                    if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
-
-//                        Log.i(TAG, result);
-//                        Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-//                        Log.i(TAG, "Status code: " + httpResponse.getStatusLine().getStatusCode());
-//                    }
-                } catch (InterruptedException e) {
-//                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, e.toString());
-                } catch (ExecutionException e) {
-//                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, e.toString());
-                }
-            }
-        });
-
-        // Stop Alert button
+//        alertButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                // Start using Spring
+//                String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
+//
+//                // Get Android school
+//                School school = new School();
+//                school.setId(1);
+//
+//                // Get sent from alex alert
+//                Alert alert = new Alert();
+//                alert.setID(1);
+//
+//                // Get Help me status
+//                Status status = new Status();
+//                status.setId(1);
+//
+//                // Get textUser User
+//                User user = new User();
+//                user.setId(1);
+//
+//                Report report = new Report();
+//                report.setUser(user);
+//                report.setAlert(alert);
+//                report.setStatus(status);
+//                report.setSchool(school);
+//                // Stop using Spring
+//
+//                try {
+//                    String response = new CreateReportsTask().execute(report).get();
+//
+////                    Log.wtf(TAG, response);
+//
+//                    // See http://tools.ietf.org/html/rfc7231#section-6
+////                    if (httpResponse.getStatusLine().getStatusCode() < 300 && httpResponse.getStatusLine().getStatusCode() >= 200) {
+//
+////                        Log.i(TAG, result);
+////                        Toast.makeText(MainActivity.this, R.string.alert_created, Toast.LENGTH_SHORT).show();
+////                    } else {
+////                        Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+////                        Log.i(TAG, "Status code: " + httpResponse.getStatusLine().getStatusCode());
+////                    }
+//                } catch (InterruptedException e) {
+////                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+//                    Log.e(TAG, e.toString());
+//                } catch (ExecutionException e) {
+////                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
+//                    Log.e(TAG, e.toString());
+//                }
+//            }
+//        });
 
         // Start "Share Walk" buttons
         shareWalkButton.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +163,7 @@ public class MainActivity extends Activity {
             openProfile();
             return true;
         } else if (id == R.id.action_alert) {
-            openProfile();
+            openAlert();
             return true;
         }
 
@@ -184,7 +172,7 @@ public class MainActivity extends Activity {
 
     private void openProfile() {
 
-        Intent intent = new Intent(MainActivity.this, AlertActivity.class);
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
@@ -203,36 +191,37 @@ public class MainActivity extends Activity {
         this.startActivity(intent);
     }
 
-    class ProgressUpTask extends AsyncTask<Void, Void, Void> {
+
+    public void UpdateButtonProgress()
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                alertButton.setProgress(alertButton.getProgress() + 5);
+
+            }
+        });
+
+    }
+
+    class ProgressUpTask extends AsyncTask<Void, Void ,Void>
+    {
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-
-            super.onPostExecute(aVoid);
-
-            while (alertButton.isPressed()) {
-                if (alertButton.getProgress() >= 100) {
-                    Toast.makeText(getApplicationContext(), "You made it!", Toast.LENGTH_LONG).show();
-                    Log.i(TAG, "You made it!");
-                } else {
-
-                    Log.i(TAG, "Progress is " + alertButton.getProgress());
-
-                    alertButton.setProgress(alertButton.getProgress() + 10);
+        protected Void doInBackground(Void... Voids) {
+            while (pressedUp)
+            {
+               // Log.i(TAG, "THE BUTTON IS PRESSED");
+                UpdateButtonProgress();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            try {
-                Thread.sleep(100L);
-            } catch (InterruptedException android) {
-                Log.wtf(TAG, android);
-            }
-
             return null;
         }
     }
+
 }
