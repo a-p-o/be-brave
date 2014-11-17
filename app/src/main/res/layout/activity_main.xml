@@ -7,19 +7,19 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <com.dd.processbutton.iml.ActionProcessButton
+    <com.dd.processbutton.iml.SubmitProcessButton
         android:layout_width="170dp"
         android:layout_height="100dp"
         android:text="@string/alert"
         android:hapticFeedbackEnabled="true"
         android:soundEffectsEnabled="true"
         android:id="@+id/alert_button"
+        android:textColor="@android:color/white"
         custom:colorComplete="@color/green_complete"
         custom:colorNormal="@color/blue_normal"
-        custom:colorPressed="@color/blue_pressed"
         custom:colorProgress="@color/purple_progress"
         custom:completeText="Success"
-        custom:progressText="Loading"/>
+        custom:progressText="Alert"/>
 
 
     <Button
