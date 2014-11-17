@@ -7,22 +7,26 @@
     <!-- # ActionBar -->
     <string name="action_settings">Settings</string>
     <string name="action_profile">Profile</string>
+    <string name="action_report">Report</string>
     <string name="action_alert">Alert</string>
 
     <!-- MainActivity -->
     <string name="title_activity_main">Main Activity</string>
-    <string name="alert">Alert</string>
-    <string name="alert_created">Created alert</string>
-    <string name="alert_created_error">Could not create alert</string>
+    <string name="report">Report</string>
+    <string name="report_created">Created report</string>
+    <string name="report_created_error">Could not create report</string>
 
     <!-- # ProfileActivity -->
     <string name="title_activity_profile">Profile Activity</string>
 
-    <!-- # AlertActivity -->
-    <string name="title_activity_alert">Alert Activity</string>
+    <!-- # ReportActivity -->
+    <string name="title_activity_report">Report Activity</string>
 
     <!-- # SettingsActivity -->
     <string name="title_activity_settings">Settings Activity</string>
+
+    <!-- # AlertActivity -->
+    <string name="title_activity_alert">Alert Activity</string>
     
     <!-- ## Security -->
     <string name="pref_header_security">Security</string>
