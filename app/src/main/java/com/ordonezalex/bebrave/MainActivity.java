@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.ordonezalex.bebrave.services.LocationService;
 import com.ordonezalex.bebrave.tasks.CreateReportsTask;
 import com.ordonezalex.bebrave.util.Alert;
@@ -28,29 +30,44 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button alertButton = (Button) findViewById(R.id.alert_button);
+        ActionProcessButton alertButton = (ActionProcessButton) findViewById(R.id.alert_button);
         Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
         Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
-        // Start "Share Walk" buttons
-        shareWalkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Start the background location service here for testing purposes
-                startService(new Intent(LocationService.class.getName()));
-            }
-        });
-
-        stopWalkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Stop the background location service here for testing purposes
-                stopService(new Intent(LocationService.class.getName()));
-            }
-        });
-        // Stop "Share Walk" buttons
-
         // Start Alert button
+        alertButton.setOnTouchListener(new View.OnTouchListener() {
+            ActionProcessButton alertButton = (ActionProcessButton) findViewById(R.id.alert_button);
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        alertButton.setPressed(true);
+
+                        alertButton.setProgress(alertButton.getProgress() + 10);
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_OUTSIDE:
+                        view.setPressed(false);
+
+                        break;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        break;
+                    case MotionEvent.ACTION_POINTER_UP:
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+        alertButton.setMode(ActionProcessButton.Mode.PROGRESS);
+        alertButton.setProgress(0);
+
         alertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +121,26 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
         // Stop Alert button
+
+        // Start "Share Walk" buttons
+        shareWalkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Start the background location service here for testing purposes
+                startService(new Intent(LocationService.class.getName()));
+            }
+        });
+
+        stopWalkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Stop the background location service here for testing purposes
+                stopService(new Intent(LocationService.class.getName()));
+            }
+        });
+        // Stop "Share Walk" buttons
     }
 
     @Override
