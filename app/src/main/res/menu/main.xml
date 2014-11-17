@@ -1,6 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.ordonezalex.bebrave.MainActivity">
+
     <item
         android:id="@+id/action_profile"
         android:title="@string/action_profile"
