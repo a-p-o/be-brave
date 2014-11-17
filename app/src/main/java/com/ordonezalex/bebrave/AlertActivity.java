@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class AlertActivity extends Activity {
+
     public final static String TAG = "BeBrave";
 
     private ListView alertListView;
     private Alert[] alerts;
-    private List<String> titles;
     private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert";
-    private long userSchoolId = 4;//will be pulled from user
+    private long userSchoolId = 4; // Will be pulled from user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class AlertActivity extends Activity {
 
     private void populateAlerts() {
 
-//        alerts = new Alert[0];
+        List<String> titles = new ArrayList<String>();
 
         try {
             alerts = new GetAlertsTask().execute().get();
@@ -43,18 +43,14 @@ public class AlertActivity extends Activity {
             e.printStackTrace();
         }
 
-        titles = new ArrayList<String>();
-        int count = 0;
-
-        //Filter out alerts from other schools
-        for (int i = 0; i < alerts.length; i++) {
-            if (alerts[i].getSchool().getId() == userSchoolId) {
-                titles.add(alerts[i].getTitle());
-                count++;
+        // Filter out Alerts from other schools
+        for (Alert alert : alerts) {
+            if (alert.getSchool().getId() == userSchoolId) {
+                titles.add(alert.getTitle());
             }
         }
 
-        //add alerts to adapter
+        // Add Alerts to adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, titles);
         alertListView.setAdapter(adapter);
     }
