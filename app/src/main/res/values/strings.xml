@@ -23,8 +23,8 @@
     <!-- # ProfileActivity -->
     <string name="title_activity_profile">Profile Activity</string>
 
-    <!-- # ReportActivity -->
-    <string name="title_activity_report">Report Activity</string>
+    <!-- # ShareWalkActivity -->
+    <string name="title_activity_share_walk">Share Walk Activity</string>
 
     <!-- # SettingsActivity -->
     <string name="title_activity_settings">Settings Activity</string>
@@ -42,7 +42,5 @@
     <string name="pref_pin">Security PIN</string>
     <string name="pref_pin_summary">Lets you disable accidental reports</string>
     <string name="pref_default_pin">0000</string>
-    <string name="title_activity_share_walk">ShareWalkActivity</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>
