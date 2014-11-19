@@ -95,6 +95,7 @@ public class MainActivity extends Activity {
 
                 // Start the background location service here for testing purposes
                 Intent startLocationServiceIntent = new Intent(MainActivity.this, LocationService.class);
+                openShareWalk();
                 startService(startLocationServiceIntent);
 
                 Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
@@ -172,6 +173,13 @@ public class MainActivity extends Activity {
     private void openAlert() {
 
         Intent intent = new Intent(MainActivity.this, AlertActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+    }
+
+    private void openShareWalk()
+    {
+        Intent intent = new Intent(MainActivity.this, ShareWalkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
