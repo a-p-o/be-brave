@@ -1,9 +1,16 @@
 package com.ordonezalex.bebrave;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,7 +33,8 @@ import com.ordonezalex.bebrave.util.User;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends Activity {
-    public final static String TAG = "BeBrave";
+    public static final String TAG = "BeBrave";
+    public static final int NOTIFICATION_SHARE_WALK_ID = 1;
 
     private SubmitProcessButton reportButton;
     private Button shareWalkButton;
@@ -35,6 +43,7 @@ public class MainActivity extends Activity {
     private boolean pressedUp = false;
     private int progress;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,18 +83,45 @@ public class MainActivity extends Activity {
 
         // Start "Share Walk" buttons
         shareWalkButton.setOnClickListener(new View.OnClickListener() {
+            private Notification.Builder builder = new Notification.Builder(MainActivity.this)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
+                    .setContentText(getResources().getString(R.string.notification_share_walk_text))
+                    .setOngoing(true)
+                    .setPriority(NOTIFICATION_SHARE_WALK_ID);
+
             @Override
             public void onClick(View view) {
-                //Start the background location service here for testing purposes
-                startService(new Intent(LocationService.class.getName()));
+
+                // Start the background location service here for testing purposes
+                Intent startLocationServiceIntent = new Intent(MainActivity.this, LocationService.class);
+                startService(startLocationServiceIntent);
+
+                Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
+
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(resultIntent);
+                PendingIntent resultPendingIntent =
+                        stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(resultPendingIntent);
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(NOTIFICATION_SHARE_WALK_ID, builder.build());
             }
         });
 
         stopWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Stop the background location service here for testing purposes
-                stopService(new Intent(LocationService.class.getName()));
+
+                // Stop the background location service here for testing purposes
+                Intent stopLocationServiceIntent = new Intent(MainActivity.this, LocationService.class);
+                stopService(stopLocationServiceIntent);
+
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(NOTIFICATION_SHARE_WALK_ID);
             }
         });
         // Stop "Share Walk" buttons
@@ -140,8 +176,8 @@ public class MainActivity extends Activity {
         this.startActivity(intent);
     }
 
-    public void cancelReportDialog()
-    {
+    public void cancelReportDialog() {
+
         Log.i(TAG, "Creating cancel report dialog.");
         DialogFragment newFragment = new CancelReportDialogFragment();
         newFragment.show(getFragmentManager(), "CancelReport");
@@ -149,8 +185,7 @@ public class MainActivity extends Activity {
     }
 
     //sends a report via asynctask
-    private void sendReport()
-    {
+    private void sendReport() {
         // Start using Spring
         String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
 
@@ -190,28 +225,26 @@ public class MainActivity extends Activity {
     }
 
     //method used to update the progress of the button
-    public void updateButtonProgress()
-    {
+    public void updateButtonProgress() {
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //progress is used instead of alert.getProgress to avoid recurring loops after progress is at 100
                 if (progress == 100) {
-                    progress+=5;
-                    pressedUp=false;
+                    progress += 5;
+                    pressedUp = false;
                     cancelReportDialog();
                     Log.i(TAG, "Loading done");
                 } else {
                     reportButton.setProgress(reportButton.getProgress() + 5);
-                    progress+=5;
+                    progress += 5;
                 }
             }
         });
-
     }
 
-    class ProgressUpTask extends AsyncTask<Void, Void ,Void>
-    {
+    class ProgressUpTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
 
@@ -225,8 +258,9 @@ public class MainActivity extends Activity {
 
         @Override
         protected Void doInBackground(Void... Voids) {
+
             while (pressedUp) {
-               // Log.i(TAG, "THE BUTTON IS PRESSED");
+                // Log.i(TAG, "THE BUTTON IS PRESSED");
                 updateButtonProgress();
                 try {
                     Thread.sleep(100);
@@ -237,5 +271,4 @@ public class MainActivity extends Activity {
             return null;
         }
     }
-
 }

@@ -10,11 +10,15 @@
     <string name="action_report">Report</string>
     <string name="action_alert">Alert</string>
 
-    <!-- MainActivity -->
+    <!-- # MainActivity -->
     <string name="title_activity_main">Main Activity</string>
     <string name="report">Report</string>
     <string name="report_created">Created report</string>
     <string name="report_created_error">Could not create report</string>
+
+    <!-- ## Notifications -->
+    <string name="notification_share_walk_title">Sharing walk</string>
+    <string name="notification_share_walk_text">Be brave, but stay safe.</string>
 
     <!-- # ProfileActivity -->
     <string name="title_activity_profile">Profile Activity</string>
