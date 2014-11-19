@@ -9,9 +9,6 @@ import android.view.LayoutInflater;
 
 import com.ordonezalex.bebrave.R;
 
-/**
- * Created by Sebastian Florez on 11/17/2014.
- */
 public class CancelReportDialogFragment extends DialogFragment {
 
     @Override
@@ -21,10 +18,9 @@ public class CancelReportDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.dialog_cancel_report, null))
-
-                .setPositiveButton(R.string.cancel_report, new DialogInterface.OnClickListener(){
+                .setPositiveButton(R.string.cancel_report, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id){
+                    public void onClick(DialogInterface dialog, int id) {
 
                     }
                 })
