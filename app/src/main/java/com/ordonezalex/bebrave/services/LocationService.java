@@ -1,36 +1,27 @@
 package com.ordonezalex.bebrave.services;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 
-public class LocationService extends Service {
+public class LocationService extends Service implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
     private static final String TAG = LocationService.class.getSimpleName();
-    private LocationManager lm;
+    private static final long LOCATION_REQUEST_INTERVAL = 10000;
+    private static final long LOCATION_REQUEST_INTERVAL_FASTEST = 5000;
 
-    // Declare the timer for periodic task running
-    private Timer timer;
-
-    // Set up the timer task to run a specific task
-    private TimerTask updateTask = new TimerTask() {
-        @Override
-        public void run() {
-
-            getLocationUpdates();
-            Log.i(TAG, "Timer task doing work");
-        }
-    };
+    LocationClient locationClient;
+    LocationRequest locationRequest;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -42,87 +33,63 @@ public class LocationService extends Service {
     public void onCreate() {
 
         super.onCreate();
-        Log.i(TAG, "Service Creating");
-
-        timer = new Timer("LocationServiceTimer");
-        timer.schedule(updateTask, 10L, 60 * 100L);
+        Log.i(TAG, "Creating location service");
     }
 
     @Override
     public void onDestroy() {
 
         super.onDestroy();
-        Log.i(TAG, "Service Destroying");
-
-        timer.cancel();
-        timer = null;
+        Log.i(TAG, "Destroying location service");
     }
 
-    public void getLocationUpdates() {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
-        MyLocationListener locList = new MyLocationListener();
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locList, getMainLooper());
+        this.getLocationUpdates();
 
-        setMockLocation(15.387653, 73.872585, 500);
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    private void setMockLocation(double latitude, double longitude, float accuracy) {
+    private void getLocationUpdates() {
 
-        lm.addTestProvider(LocationManager.GPS_PROVIDER,
-                "requiresNetwork" == "",
-                "requiresSatellite" == "",
-                "requiresCell" == "",
-                "hasMonetaryCost" == "",
-                "supportsAltitude" == "",
-                "supportsSpeed" == "",
-                "supportsBearing" == "",
-                android.location.Criteria.POWER_LOW,
-                android.location.Criteria.ACCURACY_FINE);
+        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+            locationClient = new LocationClient(this, this, this);
 
-        Location newLocation = new Location(LocationManager.GPS_PROVIDER);
-
-        newLocation.setLatitude(latitude);
-        newLocation.setLongitude(longitude);
-        newLocation.setAccuracy(accuracy);
-        newLocation.setTime(1000L);
-        newLocation.setElapsedRealtimeNanos(100L);
-
-        lm.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
-
-        lm.setTestProviderStatus(LocationManager.GPS_PROVIDER,
-                LocationProvider.AVAILABLE,
-                null, System.currentTimeMillis());
-
-        lm.setTestProviderLocation(LocationManager.GPS_PROVIDER, newLocation);
+            if (!locationClient.isConnected() || !locationClient.isConnecting()) {
+                locationClient.connect();
+            }
+        } else {
+            Log.wtf(TAG, "Cannot connect to Google Play Services. Check your network connection.");
+        }
     }
-}
 
-class MyLocationListener implements LocationListener {
-    public String TAG = "beBrave";
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        Log.i(TAG, "Connected to service.");
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
+        locationRequest.setInterval(LOCATION_REQUEST_INTERVAL_FASTEST);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        locationClient.requestLocationUpdates(locationRequest, this);
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
 
     @Override
     public void onLocationChanged(Location location) {
 
-        Log.i(TAG, "Latitude: " + location.getLatitude());
-        Log.i(TAG, "Longitude: " + location.getLongitude());
     }
 
     @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-        Log.i(TAG, "GPS Enabled");
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-        Log.i(TAG, "GPS Disabled");
     }
 }
 
