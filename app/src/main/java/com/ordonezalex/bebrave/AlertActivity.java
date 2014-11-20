@@ -27,8 +27,8 @@ public class AlertActivity extends Activity {
     private  List<String> titles;
     private ListView alertListView;
     private Alert[] alerts;
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert";
-    private long userSchoolId = 4; // Will be pulled from user
+    private static long userSchoolId = 4; // Will be pulled from user
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert?School=" + userSchoolId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
