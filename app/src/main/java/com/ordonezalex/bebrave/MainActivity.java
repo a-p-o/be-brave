@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
     private SubmitProcessButton reportButton;
     private Button shareWalkButton;
     private Button stopWalkButton;
+    private GestureDetector gestureDetector;
     //booleans used for the progress button actions
     private boolean pressedUp = false;
     private int progress;
@@ -49,6 +51,9 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        gestureDetector = new GestureDetector(this,
+                new SwipeGestureDetector());
 
         reportButton = (SubmitProcessButton) findViewById(R.id.report_button);
         shareWalkButton = (Button) findViewById(R.id.share_walk_button);
@@ -134,6 +139,29 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) {
+            return true;
+        }
+        return super.onTouchEvent(event);
+    }
+
+    //method for swiping left
+    private void onLeftSwipe() {
+        // Open profile when swiped left
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
+    }
+
+    private void onRightSwipe() {
+        // Open share walk when swiped right
+        Intent intent = new Intent(MainActivity.this, ShareWalkActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
     }
 
     @Override
@@ -250,6 +278,42 @@ public class MainActivity extends Activity {
                 }
             }
         });
+    }
+
+    //private class for determining left or right swipe gestures
+    private class SwipeGestureDetector
+            extends GestureDetector.SimpleOnGestureListener {
+        // Swipe properties, you can change it to make the swipe
+        // longer or shorter and speed
+        private static final int SWIPE_MIN_DISTANCE = 120;
+        private static final int SWIPE_MAX_OFF_PATH = 200;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY) {
+            try {
+                float diffAbs = Math.abs(e1.getY() - e2.getY());
+                float diff = e1.getX() - e2.getX();
+
+                if (diffAbs > SWIPE_MAX_OFF_PATH)
+                    return false;
+
+                // Left swipe
+                if (diff > SWIPE_MIN_DISTANCE
+                        && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    MainActivity.this.onLeftSwipe();
+
+                    // Right swipe
+                } else if (-diff > SWIPE_MIN_DISTANCE
+                        && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    MainActivity.this.onRightSwipe();
+                }
+            } catch (Exception e) {
+                Log.e("YourActivity", "Error on gestures");
+            }
+            return false;
+        }
     }
 
     class ProgressUpTask extends AsyncTask<Void, Void, Void> {
