@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
 
         // Get sent from alex alert
         Alert alert = new Alert();
-        alert.setID(3);
+        alert.setPriority(1);
 
         // Get Help me status
         Status status = new Status();
