@@ -3,11 +3,6 @@ package com.ordonezalex.bebrave;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,20 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.SubmitProcessButton;
 import com.ordonezalex.bebrave.dialogs.CancelReportDialogFragment;
-import com.ordonezalex.bebrave.services.LocationService;
 import com.ordonezalex.bebrave.tasks.CreateReportsTask;
 import com.ordonezalex.bebrave.util.Alert;
 import com.ordonezalex.bebrave.util.Report;
 import com.ordonezalex.bebrave.util.School;
 import com.ordonezalex.bebrave.util.Status;
 import com.ordonezalex.bebrave.util.User;
-
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends Activity {
     public static final String TAG = "BeBrave";
@@ -193,17 +184,9 @@ public class MainActivity extends Activity {
         report.setStatus(status);
         report.setSchool(school);
 
-        try {
-            Log.i(TAG, "About to send the report");
-            String response = new CreateReportsTask().execute(report).get();
-            Log.wtf(TAG, response);
-        } catch (InterruptedException e) {
-//                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, e.toString());
-        } catch (ExecutionException e) {
-//                    Toast.makeText(MainActivity.this, R.string.alert_created_error, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, e.toString());
-        }
+        Log.i(TAG, "About to send the report...");
+        new CreateReportsTask().execute(report);
+        Log.i(TAG, "Report sent.");
     }
 
     //method used to update the progress of the button
