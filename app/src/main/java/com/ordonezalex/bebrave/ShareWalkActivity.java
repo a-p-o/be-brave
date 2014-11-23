@@ -3,6 +3,7 @@ package com.ordonezalex.bebrave;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +22,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.ordonezalex.bebrave.services.LocationService;
 
-public class ShareWalkActivity extends Activity {
+public class ShareWalkActivity extends FragmentActivity {
     private final static String TAG = "Be-Brave";
 
     private MyReceiver receiver;
@@ -32,6 +38,8 @@ public class ShareWalkActivity extends Activity {
     private Button shareWalkButton;
     private Button stopWalkButton;
     public static final int NOTIFICATION_SHARE_WALK_ID = 1;
+    private android.support.v4.app.FragmentManager myFragmentManager;
+    SupportMapFragment mySupportMapFragment;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -39,11 +47,17 @@ public class ShareWalkActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_walk);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_placeholder, new PlaceholderFragment())
-                    .commit();
-        }
+//        if (savedInstanceState == null) {
+//            getFragmentManager().beginTransaction()
+//                    .replace(R.id.fragment_placeholder, new PlaceholderFragment())
+//                    .commit();
+//        }
+
+        myFragmentManager = getSupportFragmentManager();
+
+        mySupportMapFragment = ((SupportMapFragment) myFragmentManager.findFragmentById(R.id.map));
+
+        map = mySupportMapFragment.getMap();
 
         receiver = new MyReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -105,20 +119,31 @@ public class ShareWalkActivity extends Activity {
             double Latitude = intent.getDoubleExtra("Latitude", 0);
             double Longitude = intent.getDoubleExtra("Longitude", 0);
 
+            map.clear();
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(Latitude,Longitude))
+                    .title("User's Location"));
+
+            // Move the camera instantly to user with a zoom of 15.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Latitude,Longitude), 19));
+
+            // Zoom in, animating the camera.
+           // map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+
             Toast.makeText(ShareWalkActivity.this, "Location of user changed to: " + Latitude + ", " + Longitude, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public static class PlaceholderFragment extends Fragment {
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            View rootView = inflater.inflate(R.layout.fragment_share_walk, container, false);
-            return rootView;
-        }
-    }
+//    public static class PlaceholderFragment extends Fragment {
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//
+//            View rootView = inflater.inflate(R.layout.fragment_share_walk, container, false);
+//            return rootView;
+//        }
+//    }
 
 //    private void setUpMapIfNeeded() {
 //        // Do a null check to confirm that we have not already instantiated the map.

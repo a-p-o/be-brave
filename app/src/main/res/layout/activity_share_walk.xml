@@ -4,12 +4,12 @@
     android:orientation="vertical"
     tools:context="com.ordonezalex.bebrave.ShareWalkActivity" tools:ignore="MergeRootFrame" >
 
-    <RelativeLayout
-        android:id="@+id/fragment_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="459dp">
-
-    </RelativeLayout>
+   <fragment
+       android:id="@+id/map"
+       android:layout_width="match_parent"
+       android:layout_height="445dp"
+       android:name="com.google.android.gms.maps.SupportMapFragment"
+       />
 
     <FrameLayout
         android:layout_width="match_parent"
