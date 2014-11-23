@@ -1,10 +1,8 @@
 package com.ordonezalex.bebrave.tasks;
 
 import android.os.AsyncTask;
-import android.os.Message;
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ordonezalex.bebrave.util.Report;
 
 import org.springframework.http.HttpEntity;
@@ -42,6 +40,7 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
         try {
             ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, requestEntity, String.class);
             result = response.getBody();
+
             return result;
         } catch (HttpServerErrorException e) {
             Log.wtf(TAG, e.getResponseBodyAsString());
@@ -50,5 +49,13 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
         }
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(String response) {
+
+        Log.i(TAG, "Reponse: " + response);
+
+        super.onPostExecute(response);
     }
 }
