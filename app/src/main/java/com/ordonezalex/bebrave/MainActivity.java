@@ -35,11 +35,9 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends Activity {
     public static final String TAG = "BeBrave";
-    public static final int NOTIFICATION_SHARE_WALK_ID = 1;
+
 
     private SubmitProcessButton reportButton;
-    private Button shareWalkButton;
-    private Button stopWalkButton;
     private GestureDetector gestureDetector;
     //booleans used for the progress button actions
     private boolean pressedUp = false;
@@ -56,8 +54,7 @@ public class MainActivity extends Activity {
                 new SwipeGestureDetector());
 
         reportButton = (SubmitProcessButton) findViewById(R.id.report_button);
-        shareWalkButton = (Button) findViewById(R.id.share_walk_button);
-        stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
+
 
         // Start Alert button
         reportButton.setOnTouchListener(new View.OnTouchListener() {
@@ -86,51 +83,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        // Start "Share Walk" buttons
-        shareWalkButton.setOnClickListener(new View.OnClickListener() {
-            private Notification.Builder builder = new Notification.Builder(MainActivity.this)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
-                    .setContentText(getResources().getString(R.string.notification_share_walk_text))
-                    .setOngoing(true)
-                    .setPriority(NOTIFICATION_SHARE_WALK_ID);
 
-            @Override
-            public void onClick(View view) {
-
-                // Start the background location service here for testing purposes
-                Intent startLocationServiceIntent = new Intent(MainActivity.this, LocationService.class);
-                openShareWalk();
-                startService(startLocationServiceIntent);
-
-                Intent resultIntent = new Intent(MainActivity.this, MainActivity.class);
-
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.this);
-                stackBuilder.addParentStack(MainActivity.class);
-                stackBuilder.addNextIntent(resultIntent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(resultPendingIntent);
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(NOTIFICATION_SHARE_WALK_ID, builder.build());
-            }
-        });
-
-        stopWalkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Stop the background location service here for testing purposes
-                Intent stopLocationServiceIntent = new Intent(MainActivity.this, LocationService.class);
-                stopService(stopLocationServiceIntent);
-
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.cancel(NOTIFICATION_SHARE_WALK_ID);
-            }
-        });
-        // Stop "Share Walk" buttons
     }
 
     @Override
@@ -201,13 +154,6 @@ public class MainActivity extends Activity {
     private void openAlert() {
 
         Intent intent = new Intent(MainActivity.this, AlertActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(intent);
-    }
-
-    private void openShareWalk()
-    {
-        Intent intent = new Intent(MainActivity.this, ShareWalkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }
