@@ -160,8 +160,20 @@ public class ShareWalkActivity extends FragmentActivity {
 //    }
 
     @Override
-    protected void onStop() {
-        unregisterReceiver(receiver);
-        super.onStop();
+    protected void onPause() {
+        if(receiver != null)
+        {
+            unregisterReceiver(receiver);
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        receiver = new MyReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LocationService.MY_ACTION);
+        registerReceiver(receiver, intentFilter);
+        super.onResume();
     }
 }
