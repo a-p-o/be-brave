@@ -1,9 +1,6 @@
 package com.ordonezalex.bebrave;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,15 +13,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,10 +29,7 @@ public class ShareWalkActivity extends FragmentActivity {
 
     private MyReceiver receiver;
     private GoogleMap map;
-    private Button shareWalkButton;
-    private Button stopWalkButton;
     public static final int NOTIFICATION_SHARE_WALK_ID = 1;
-    private android.support.v4.app.FragmentManager myFragmentManager;
     SupportMapFragment mySupportMapFragment;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -47,28 +38,19 @@ public class ShareWalkActivity extends FragmentActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_walk);
-//        if (savedInstanceState == null) {
-//            getFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_placeholder, new PlaceholderFragment())
-//                    .commit();
-//        }
 
-        myFragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentManager myFragmentManager = getSupportFragmentManager();
 
         mySupportMapFragment = ((SupportMapFragment) myFragmentManager.findFragmentById(R.id.map));
 
         map = mySupportMapFragment.getMap();
 
         receiver = new MyReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(LocationService.MY_ACTION);
-        registerReceiver(receiver, intentFilter);
 
-        //setUpMapIfNeeded();
+//        setUpMapIfNeeded();
 
-        shareWalkButton = (Button) findViewById(R.id.share_walk_button);
-        stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
-
+        Button shareWalkButton = (Button) findViewById(R.id.share_walk_button);
+        Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
         shareWalkButton.setOnClickListener(new View.OnClickListener() {
             private Notification.Builder builder = new Notification.Builder(ShareWalkActivity.this)
@@ -77,8 +59,10 @@ public class ShareWalkActivity extends FragmentActivity {
                     .setContentText(getResources().getString(R.string.notification_share_walk_text))
                     .setOngoing(true)
                     .setPriority(NOTIFICATION_SHARE_WALK_ID);
+
             @Override
             public void onClick(View view) {
+
                 Intent startLocationServiceIntent = new Intent(ShareWalkActivity.this, LocationService.class);
                 startService(startLocationServiceIntent);
 
@@ -93,21 +77,19 @@ public class ShareWalkActivity extends FragmentActivity {
                 NotificationManager notificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(NOTIFICATION_SHARE_WALK_ID, builder.build());
-
-
             }
         });
 
         stopWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent stopLocationServiceIntent = new Intent(ShareWalkActivity.this, LocationService.class);
                 stopService(stopLocationServiceIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(NOTIFICATION_SHARE_WALK_ID);
-
             }
         });
     }
@@ -116,34 +98,24 @@ public class ShareWalkActivity extends FragmentActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            double Latitude = intent.getDoubleExtra("Latitude", 0);
-            double Longitude = intent.getDoubleExtra("Longitude", 0);
+
+            double latitude = intent.getDoubleExtra("Latitude", 0);
+            double longitude = intent.getDoubleExtra("Longitude", 0);
 
             map.clear();
             map.addMarker(new MarkerOptions()
-                    .position(new LatLng(Latitude,Longitude))
+                    .position(new LatLng(latitude, longitude))
                     .title("User's Location"));
 
             // Move the camera instantly to user with a zoom of 15.
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Latitude,Longitude), 19));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 19));
 
             // Zoom in, animating the camera.
-           // map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+            // map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 
-            Toast.makeText(ShareWalkActivity.this, "Location of user changed to: " + Latitude + ", " + Longitude, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShareWalkActivity.this, "Location of user changed to: " + latitude + ", " + longitude, Toast.LENGTH_SHORT).show();
         }
     }
-
-//    public static class PlaceholderFragment extends Fragment {
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//
-//            View rootView = inflater.inflate(R.layout.fragment_share_walk, container, false);
-//            return rootView;
-//        }
-//    }
 
 //    private void setUpMapIfNeeded() {
 //        // Do a null check to confirm that we have not already instantiated the map.
@@ -160,20 +132,34 @@ public class ShareWalkActivity extends FragmentActivity {
 //    }
 
     @Override
-    protected void onPause() {
-        if(receiver != null)
-        {
-            unregisterReceiver(receiver);
-        }
-        super.onPause();
+    protected void onResume() {
+
+        Log.i(TAG, "Resumed ShareWalkActivity.");
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LocationService.MY_ACTION);
+
+        Log.i(TAG, "Registering receiver...");
+
+        registerReceiver(receiver, intentFilter);
+
+        Log.i(TAG, "Registered receiver.");
+
+        super.onResume();
     }
 
     @Override
-    protected void onResume() {
-        receiver = new MyReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(LocationService.MY_ACTION);
-        registerReceiver(receiver, intentFilter);
-        super.onResume();
+    protected void onPause() {
+
+        Log.i(TAG, "Paused ShareWalkActivity.");
+
+        if (receiver != null) {
+            Log.i(TAG, "Unregistering receiver...");
+
+            unregisterReceiver(receiver);
+
+            Log.i(TAG, "Unregistered receiver.");
+        }
+        super.onPause();
     }
 }
