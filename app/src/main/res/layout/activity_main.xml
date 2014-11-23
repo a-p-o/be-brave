@@ -22,19 +22,4 @@
         custom:progressText="Alert"/>
 
 
-    <Button
-        android:layout_width="170dp"
-        android:layout_height="100dp"
-        android:text="Share Walk"
-        android:hapticFeedbackEnabled="true"
-        android:soundEffectsEnabled="true"
-        android:id="@+id/share_walk_button"/>
-    <Button
-        android:layout_width="170dp"
-        android:layout_height="100dp"
-        android:text="Stop Walk"
-        android:hapticFeedbackEnabled="true"
-        android:soundEffectsEnabled="true"
-        android:id="@+id/stop_walk_button"/>
-
 </LinearLayout>

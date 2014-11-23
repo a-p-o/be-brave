@@ -25,6 +25,8 @@
 
     <!-- # ShareWalkActivity -->
     <string name="title_activity_share_walk">Share Walk Activity</string>
+    <string name="share_walk">Share Walk</string>
+    <string name="stop_walk">Stop Walk</string>
 
     <!-- # SettingsActivity -->
     <string name="title_activity_settings">Settings Activity</string>
