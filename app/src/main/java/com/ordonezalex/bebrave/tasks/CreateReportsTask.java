@@ -27,36 +27,28 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
 
         Report report;
         report = reports[0];
-        Message message = new Message();
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(new MediaType("application", "json"));
         HttpEntity<Report> requestEntity = new HttpEntity<Report>(report, requestHeaders);
-
-        ObjectMapper mapper = new ObjectMapper();
-
-//        try {
-//            Log.i(TAG, mapper.writerWithDefaultPrettyPrinter().writeValueAsString(report));
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
 
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-        String result = null;
+        String result;
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, requestEntity, String.class);
             result = response.getBody();
+            return result;
         } catch (HttpServerErrorException e) {
             Log.wtf(TAG, e.getResponseBodyAsString());
         } catch (HttpClientErrorException e) {
             Log.wtf(TAG, e);
         }
 
-        return result;
+        return null;
     }
 }

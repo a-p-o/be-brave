@@ -15,16 +15,19 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
-public class LocationService extends Service implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+public class LocationService extends Service implements GooglePlayServicesClient.ConnectionCallbacks,
+                                                        GooglePlayServicesClient.OnConnectionFailedListener,
+                                                        LocationListener {
 
     private static final String TAG = LocationService.class.getSimpleName();
     private static final long LOCATION_REQUEST_INTERVAL = 1000;
     private static final long LOCATION_REQUEST_INTERVAL_FASTEST = 1000;
     private static final float LOCATION_REQUEST_DISPLACEMENT_MINIMUM = 0f;
 
-    LocationClient locationClient;
-    LocationRequest locationRequest;
+    private LocationClient locationClient;
+    private LocationRequest locationRequest;
 
+    public static final String MY_ACTION = "MY_ACTION";
     @Override
     public IBinder onBind(Intent intent) {
 
@@ -116,8 +119,14 @@ public class LocationService extends Service implements GooglePlayServicesClient
         Log.i(TAG, "New location received by client.");
 
         if (location != null) {
+            Intent intent = new Intent();
+            intent.setAction(MY_ACTION);
+            intent.putExtra("Latitude" , location.getLatitude());
+            intent.putExtra("Longitude" , location.getLongitude());
+
+            sendBroadcast(intent);
             Log.i(TAG, "position: " + location.getLatitude() + ", " + location.getLongitude());
-            Toast.makeText(this, "position: " + location.getLatitude() + ", " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "position: " + location.getLatitude() + ", " + location.getLongitude(), Toast.LENGTH_SHORT).show();
         } else {
             Log.i(TAG, "Location is null");
 
