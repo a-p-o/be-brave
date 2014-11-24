@@ -14,20 +14,28 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.ordonezalex.bebrave.tasks.UpdateReportsTask;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class LocationService extends Service implements GooglePlayServicesClient.ConnectionCallbacks,
-                                                        GooglePlayServicesClient.OnConnectionFailedListener,
-                                                        LocationListener {
+        GooglePlayServicesClient.OnConnectionFailedListener,
+        LocationListener {
 
     private static final String TAG = LocationService.class.getSimpleName();
     private static final long LOCATION_REQUEST_INTERVAL = 1000;
     private static final long LOCATION_REQUEST_INTERVAL_FASTEST = 1000;
     private static final float LOCATION_REQUEST_DISPLACEMENT_MINIMUM = 0f;
+    public static final String EXTRA_REPORT_ID = "EXTRA_REPORT_ID";
 
+    private int reportId;
     private LocationClient locationClient;
     private LocationRequest locationRequest;
 
     public static final String MY_ACTION = "MY_ACTION";
+
     @Override
     public IBinder onBind(Intent intent) {
 
@@ -55,6 +63,12 @@ public class LocationService extends Service implements GooglePlayServicesClient
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.i(TAG, "Starting service command...");
+
+        Log.i(TAG, "Setting report ID...");
+
+        setReportId(intent.getIntExtra(EXTRA_REPORT_ID, -1));
+
+        Log.i(TAG, "Report ID set. ID is " + reportId);
 
         getLocationUpdates();
 
@@ -121,10 +135,21 @@ public class LocationService extends Service implements GooglePlayServicesClient
         if (location != null) {
             Intent intent = new Intent();
             intent.setAction(MY_ACTION);
-            intent.putExtra("Latitude" , location.getLatitude());
-            intent.putExtra("Longitude" , location.getLongitude());
+            intent.putExtra("Latitude", location.getLatitude());
+            intent.putExtra("Longitude", location.getLongitude());
 
             sendBroadcast(intent);
+
+            Log.i(TAG, "About to update the location...");
+
+            DateFormat format = new SimpleDateFormat("HH:mm:ss MM-dd-yyyy");
+            Date date = new Date(location.getTime());
+            String time = format.format(date);
+
+            com.ordonezalex.bebrave.util.Location updateLocation = new com.ordonezalex.bebrave.util.Location(location.getLatitude(), location.getLongitude(), time);
+            new UpdateReportsTask(reportId).execute(updateLocation);
+            Log.i(TAG, "Location updated.");
+
             Log.i(TAG, "position: " + location.getLatitude() + ", " + location.getLongitude());
             //Toast.makeText(this, "position: " + location.getLatitude() + ", " + location.getLongitude(), Toast.LENGTH_SHORT).show();
         } else {
@@ -141,6 +166,11 @@ public class LocationService extends Service implements GooglePlayServicesClient
 
         stopLocationUpdates();
         stopSelf();
+    }
+
+    public void setReportId(int reportId) {
+
+        this.reportId = reportId;
     }
 }
 

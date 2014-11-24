@@ -102,7 +102,7 @@ public class AlertActivity extends Activity {
         report.setStatus(status);
         report.setSchool(school);
         try{
-            String response = new CreateReportsTask().execute(report).get();
+            String response = new CreateReportsTask(this).execute(report).get();
             Log.wtf(TAG, response);
         } catch (InterruptedException e) {
             e.printStackTrace();

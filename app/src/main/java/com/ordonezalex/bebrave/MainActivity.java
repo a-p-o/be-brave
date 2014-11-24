@@ -27,7 +27,6 @@ import com.ordonezalex.bebrave.util.User;
 public class MainActivity extends Activity {
     public static final String TAG = "BeBrave";
 
-
     private SubmitProcessButton reportButton;
     private GestureDetector gestureDetector;
     //booleans used for the progress button actions
@@ -45,7 +44,6 @@ public class MainActivity extends Activity {
                 new SwipeGestureDetector());
 
         reportButton = (SubmitProcessButton) findViewById(R.id.report_button);
-
 
         // Start Alert button
         reportButton.setOnTouchListener(new View.OnTouchListener() {
@@ -73,8 +71,6 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
-
-
     }
 
     @Override
@@ -87,6 +83,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         if (gestureDetector.onTouchEvent(event)) {
             return true;
         }
@@ -157,24 +154,22 @@ public class MainActivity extends Activity {
         Log.i(TAG, "Showed cancel report dialog.");
     }
 
-    //sends a report via asynctask
     private void sendReport() {
-        // Start using Spring
         String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
 
         // Get Android school
         School school = new School();
         school.setId(3);
 
-        // Get sent from emergency alert
+        // Get Emergency alert
         Alert alert = new Alert();
         alert.setId(2);
 
-        // Get Help me status
+        // Get Open status
         Status status = new Status();
         status.setId(2);
 
-        // Get textUser User
+        // Get Cupcake User
         User user = new User();
         user.setId(2);
 
@@ -185,11 +180,10 @@ public class MainActivity extends Activity {
         report.setSchool(school);
 
         Log.i(TAG, "About to send the report...");
-        new CreateReportsTask().execute(report);
+        new CreateReportsTask(this).execute(report);
         Log.i(TAG, "Report sent.");
     }
 
-    //method used to update the progress of the button
     public void updateButtonProgress() {
 
         runOnUiThread(new Runnable() {
@@ -209,7 +203,6 @@ public class MainActivity extends Activity {
         });
     }
 
-    //private class for determining left or right swipe gestures
     private class SwipeGestureDetector
             extends GestureDetector.SimpleOnGestureListener {
         // Swipe properties, you can change it to make the swipe
@@ -221,6 +214,7 @@ public class MainActivity extends Activity {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2,
                                float velocityX, float velocityY) {
+
             try {
                 float diffAbs = Math.abs(e1.getY() - e2.getY());
                 float diff = e1.getX() - e2.getX();
@@ -245,7 +239,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    class ProgressUpTask extends AsyncTask<Void, Void, Void> {
+    private class ProgressUpTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
 
