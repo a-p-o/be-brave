@@ -164,19 +164,19 @@ public class MainActivity extends Activity {
 
         // Get Android school
         School school = new School();
-        school.setId(4);
+        school.setId(3);
 
-        // Get sent from alex alert
+        // Get sent from emergency alert
         Alert alert = new Alert();
-        alert.setPriority(1);
+        alert.setId(2);
 
         // Get Help me status
         Status status = new Status();
-        status.setId(1);
+        status.setId(2);
 
         // Get textUser User
         User user = new User();
-        user.setId(1);
+        user.setId(2);
 
         Report report = new Report();
         report.setUser(user);
