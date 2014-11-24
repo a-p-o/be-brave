@@ -9,13 +9,13 @@ public class School {
     public static final String DEFAULT_PHONE_NUMBER = null;
 
     @JsonProperty("ID")
-    private long ID;
+    private long id;
     @JsonProperty("EmailDomain")
-    private String EmailDomain;
+    private String emailDomain;
     @JsonProperty("Address")
-    private String Address;
+    private String address;
     @JsonProperty("PhoneNumber")
-    private String PhoneNumber;
+    private String phoneNumber;
 
     public School() {
 
@@ -42,42 +42,42 @@ public class School {
 
     public long getId() {
 
-        return ID;
+        return id;
     }
 
     public void setId(long id) {
 
-        this.ID = id;
+        this.id = id;
     }
 
     public String getEmailDomain() {
 
-        return EmailDomain;
+        return emailDomain;
     }
 
     public void setEmailDomain(String emailDomain) {
 
-        this.EmailDomain = emailDomain;
+        this.emailDomain = emailDomain;
     }
 
     public String getAddress() {
 
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
 
-        this.Address = address;
+        this.address = address;
     }
 
     public String getPhoneNumber() {
 
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
 
-        this.PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
