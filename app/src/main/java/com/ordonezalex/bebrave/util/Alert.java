@@ -7,22 +7,22 @@ public class Alert {
     public static final long DEFAULT_ID = -1;
     public static final School DEFAULT_SCHOOL = null;
     public static final String DEFAULT_TITLE = null;
-    public static final int DEFAULT_COLOR = -1;
+    public static final int DEFAULT_COLOR = 0x0000;
     public static final int DEFAULT_PRIORITY = -1;
     public static final boolean DEFAULT_ENABLED = false;
 
     @JsonProperty("ID")
-    private long ID;
+    private long id;
     @JsonProperty("School")
-    private School School;
+    private School school;
     @JsonProperty("Title")
-    private String Title;
+    private String title;
     @JsonProperty("Color")
-    private int Color;
+    private int color;
     @JsonProperty("Priority")
-    private int Priority;
+    private int priority;
     @JsonProperty("Enabled")
-    private boolean Enabled;
+    private boolean enabled;
 
     public Alert() {
 
@@ -51,7 +51,7 @@ public class Alert {
 
     public Alert(School school, String title, int color, int priority, boolean enabled) {
 
-        this.setID(DEFAULT_ID);
+        this.setId(DEFAULT_ID);
         this.setSchool(school);
         this.setTitle(title);
         this.setColor(color);
@@ -59,74 +59,74 @@ public class Alert {
         this.setEnabled(enabled);
     }
 
-    public long getID() {
+    public long getId() {
 
-        return ID;
+        return id;
     }
 
-    public void setID(long ID) {
+    public void setId(long id) {
 
-        this.ID = ID;
+        this.id = id;
     }
 
     public School getSchool() {
 
-        return School;
+        return school;
     }
 
     public void setSchool(School school) {
 
-        this.School = school;
+        this.school = school;
     }
 
     public String getTitle() {
 
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
 
-        this.Title = title;
+        this.title = title;
     }
 
     public int getColor() {
 
-        return Color;
+        return color;
     }
 
     public void setColor(int color) {
 
-        this.Color = color;
+        this.color = color;
     }
 
     public int getPriority() {
 
-        return Priority;
+        return priority;
     }
 
     public void setPriority(int priority) {
 
-        this.Priority = priority;
+        this.priority = priority;
     }
 
     public boolean isEnabled() {
 
-        return Enabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
 
-        this.Enabled = enabled;
+        this.enabled = enabled;
     }
 
     public void enable() {
 
-        this.Enabled = true;
+        this.enabled = true;
     }
 
     public void disable() {
 
-        this.Enabled = false;
+        this.enabled = false;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class Alert {
         String s;
 
         s = "{" + "\n"
-                + "id: " + getID() + "\n"
+                + "id: " + getId() + "\n"
                 + "school: " + getSchool() + "\n"
                 + "title: " + getTitle() + "\n"
                 + "color: " + getColor() + "\n"
