@@ -1,6 +1,7 @@
 package com.ordonezalex.bebrave;
 
 import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,6 +32,7 @@ public class ShareWalkActivity extends FragmentActivity {
 
     private MyReceiver receiver;
     private GoogleMap map;
+    private GestureDetector gestureDetector;
     public static final int NOTIFICATION_SHARE_WALK_ID = 1;
     SupportMapFragment mySupportMapFragment;
 
@@ -46,6 +50,9 @@ public class ShareWalkActivity extends FragmentActivity {
         map = mySupportMapFragment.getMap();
 
         receiver = new MyReceiver();
+
+        gestureDetector = new GestureDetector(this,
+                new SwipeGestureDetector());
 
 //        setUpMapIfNeeded();
 
@@ -94,27 +101,22 @@ public class ShareWalkActivity extends FragmentActivity {
         });
     }
 
-    private class MyReceiver extends BroadcastReceiver {
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            double latitude = intent.getDoubleExtra("Latitude", 0);
-            double longitude = intent.getDoubleExtra("Longitude", 0);
-
-            map.clear();
-            map.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
-                    .title("User's Location"));
-
-            // Move the camera instantly to user with a zoom of 15.
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 19));
-
-            // Zoom in, animating the camera.
-            // map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-
-            Toast.makeText(ShareWalkActivity.this, "Location of user changed to: " + latitude + ", " + longitude, Toast.LENGTH_SHORT).show();
+        if (gestureDetector.onTouchEvent(event)) {
+            return true;
         }
+        return super.onTouchEvent(event);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void onRightSwipe() {
+        // Open profile when swiped left
+        Intent intent = new Intent(ShareWalkActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bundle translateBundle = ActivityOptions.makeCustomAnimation(this, R.anim.activity_right_open_translate, R.anim.activity_right_close_translate).toBundle();
+        this.startActivity(intent , translateBundle);
     }
 
 //    private void setUpMapIfNeeded() {
@@ -161,5 +163,59 @@ public class ShareWalkActivity extends FragmentActivity {
             Log.i(TAG, "Unregistered receiver.");
         }
         super.onPause();
+    }
+
+    private class SwipeGestureDetector
+            extends GestureDetector.SimpleOnGestureListener {
+        // Swipe properties, you can change it to make the swipe
+        // longer or shorter and speed
+        private static final int SWIPE_MIN_DISTANCE = 120;
+        private static final int SWIPE_MAX_OFF_PATH = 200;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY) {
+
+            try {
+                float diffAbs = Math.abs(e1.getY() - e2.getY());
+                float diff = e1.getX() - e2.getX();
+
+                if (diffAbs > SWIPE_MAX_OFF_PATH)
+                    return false;
+
+                    // Right swipe
+                 if (-diff > SWIPE_MIN_DISTANCE
+                        && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    ShareWalkActivity.this.onRightSwipe();
+                }
+            } catch (Exception e) {
+                Log.e("YourActivity", "Error on gestures");
+            }
+            return false;
+        }
+    }
+
+    private class MyReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            double latitude = intent.getDoubleExtra("Latitude", 0);
+            double longitude = intent.getDoubleExtra("Longitude", 0);
+
+            map.clear();
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .title("User's Location"));
+
+            // Move the camera instantly to user with a zoom of 15.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 19));
+
+            // Zoom in, animating the camera.
+            // map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+
+            Toast.makeText(ShareWalkActivity.this, "Location of user changed to: " + latitude + ", " + longitude, Toast.LENGTH_SHORT).show();
+        }
     }
 }
