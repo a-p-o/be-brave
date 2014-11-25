@@ -16,6 +16,8 @@ public class School {
     private String address;
     @JsonProperty("PhoneNumber")
     private String phoneNumber;
+    @JsonProperty("Name")
+    private String name;
 
     public School() {
 
@@ -80,6 +82,15 @@ public class School {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     @Override
     public String toString() {
 
@@ -90,6 +101,7 @@ public class School {
                 + "emailDomain: " + getEmailDomain() + "\n"
                 + "address: " + getAddress() + "\n"
                 + "phoneNumber: " + getPhoneNumber() + "\n"
+                + "name: " + getName() + "\n"
                 + "}" + "\n";
 
         return s;
