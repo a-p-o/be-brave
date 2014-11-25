@@ -6,34 +6,62 @@
     android:weightSum="1"
     android:orientation="vertical">
 
-
-    <ImageView
+    <LinearLayout
+        android:background="@color/blue_normal"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/ic_launcher"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="0.20"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:layout_width="182dp"
+            android:layout_height="173dp"
+            android:layout_gravity="center"
+            android:id="@+id/profile_picture_imageview"
+            android:src="@drawable/ic_launcher"
+            android:layout_weight="0.25"/>
+
+        <Button
+
+            android:layout_width="154dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/change_picture_button"
+            android:text="@string/change_profile_pic"
+            android:layout_weight="0.10"/>
+
+    </LinearLayout>
+
+
+
 
     <TextView
+        android:paddingTop="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="Loading..."
         android:id="@+id/user_name_text_view"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.13" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="Loading..."
         android:id="@+id/user_email_text_view"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.11" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="Loading..."
         android:id="@+id/user_id_text_view"
         android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

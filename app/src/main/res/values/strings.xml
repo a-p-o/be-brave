@@ -22,6 +22,7 @@
 
     <!-- # ProfileActivity -->
     <string name="title_activity_profile">Profile Activity</string>
+    <string name="change_profile_pic">Change Profile Picture</string>
 
     <!-- # ShareWalkActivity -->
     <string name="title_activity_share_walk">Share Walk Activity</string>
