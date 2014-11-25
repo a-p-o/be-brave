@@ -25,7 +25,7 @@ public class LocationService extends Service implements GooglePlayServicesClient
         LocationListener {
 
     private static final String TAG = LocationService.class.getSimpleName();
-    private static final long LOCATION_REQUEST_INTERVAL = 1000;
+    private static final long LOCATION_REQUEST_INTERVAL = 2000;
     private static final long LOCATION_REQUEST_INTERVAL_FASTEST = 1000;
     private static final float LOCATION_REQUEST_DISPLACEMENT_MINIMUM = 0f;
     public static final String EXTRA_REPORT_ID = "EXTRA_REPORT_ID";

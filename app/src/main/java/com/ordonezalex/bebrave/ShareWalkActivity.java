@@ -26,6 +26,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ordonezalex.bebrave.services.LocationService;
+import com.ordonezalex.bebrave.tasks.CreateReportsTask;
+import com.ordonezalex.bebrave.util.Alert;
+import com.ordonezalex.bebrave.util.Report;
+import com.ordonezalex.bebrave.util.School;
+import com.ordonezalex.bebrave.util.Status;
+import com.ordonezalex.bebrave.util.User;
 
 public class ShareWalkActivity extends FragmentActivity {
     private final static String TAG = "Be-Brave";
@@ -33,8 +39,10 @@ public class ShareWalkActivity extends FragmentActivity {
     private MyReceiver receiver;
     private GoogleMap map;
     private GestureDetector gestureDetector;
-    public static final int NOTIFICATION_SHARE_WALK_ID = 1;
+    public static final int NOTIFICATION_SHARE_WALK_REPORT_ID = 1;
     SupportMapFragment mySupportMapFragment;
+    private NotificationManager notificationManager;
+    private Notification.Builder builder;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -60,30 +68,10 @@ public class ShareWalkActivity extends FragmentActivity {
         Button stopWalkButton = (Button) findViewById(R.id.stop_walk_button);
 
         shareWalkButton.setOnClickListener(new View.OnClickListener() {
-            private Notification.Builder builder = new Notification.Builder(ShareWalkActivity.this)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
-                    .setContentText(getResources().getString(R.string.notification_share_walk_text))
-                    .setOngoing(true)
-                    .setPriority(NOTIFICATION_SHARE_WALK_ID);
-
             @Override
             public void onClick(View view) {
 
-                Intent startLocationServiceIntent = new Intent(ShareWalkActivity.this, LocationService.class);
-                startService(startLocationServiceIntent);
-
-                Intent resultIntent = new Intent(ShareWalkActivity.this, ShareWalkActivity.class);
-
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(ShareWalkActivity.this);
-                stackBuilder.addParentStack(ShareWalkActivity.class);
-                stackBuilder.addNextIntent(resultIntent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(resultPendingIntent);
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(NOTIFICATION_SHARE_WALK_ID, builder.build());
+                startShareWalk();
             }
         });
 
@@ -94,11 +82,64 @@ public class ShareWalkActivity extends FragmentActivity {
                 Intent stopLocationServiceIntent = new Intent(ShareWalkActivity.this, LocationService.class);
                 stopService(stopLocationServiceIntent);
 
-                NotificationManager notificationManager =
+                notificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.cancel(NOTIFICATION_SHARE_WALK_ID);
+                notificationManager.cancel(NOTIFICATION_SHARE_WALK_REPORT_ID);
             }
         });
+    }
+
+    private void startShareWalk() {
+
+        // Create Report for Share Walk
+        String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
+
+        // Get Android school
+        School school = new School();
+        school.setId(3);
+
+        // Get Emergency alert
+        Alert alert = new Alert();
+        alert.setId(10006);
+
+        // Get Open status
+        Status status = new Status();
+        status.setId(2);
+
+        // Get Cupcake User
+        User user = new User();
+        user.setId(2);
+
+        Report report = new Report();
+        report.setUser(user);
+        report.setAlert(alert);
+        report.setStatus(status);
+        report.setSchool(school);
+
+        Log.i(TAG, "About to share walk...");
+
+        // Start location service for share walk report
+        new CreateReportsTask(this).execute(report);
+        Log.i(TAG, "Sharing walk.");
+
+        // Create notification for Share Walk
+        Intent resultIntent = new Intent(ShareWalkActivity.this, ShareWalkActivity.class);
+
+        builder = new Notification.Builder(ShareWalkActivity.this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
+                .setContentText(getResources().getString(R.string.notification_share_walk_text))
+                .setOngoing(true);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(ShareWalkActivity.this);
+        stackBuilder.addParentStack(ShareWalkActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+        notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_SHARE_WALK_REPORT_ID, builder.build());
     }
 
     @Override
@@ -116,7 +157,7 @@ public class ShareWalkActivity extends FragmentActivity {
         Intent intent = new Intent(ShareWalkActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle translateBundle = ActivityOptions.makeCustomAnimation(this, R.anim.activity_right_open_translate, R.anim.activity_right_close_translate).toBundle();
-        this.startActivity(intent , translateBundle);
+        this.startActivity(intent, translateBundle);
     }
 
 //    private void setUpMapIfNeeded() {
@@ -184,8 +225,8 @@ public class ShareWalkActivity extends FragmentActivity {
                 if (diffAbs > SWIPE_MAX_OFF_PATH)
                     return false;
 
-                    // Right swipe
-                 if (-diff > SWIPE_MIN_DISTANCE
+                // Right swipe
+                if (-diff > SWIPE_MIN_DISTANCE
                         && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                     ShareWalkActivity.this.onRightSwipe();
                 }

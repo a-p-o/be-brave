@@ -4,6 +4,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.DialogFragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,12 +32,15 @@ import com.ordonezalex.bebrave.util.User;
 
 public class MainActivity extends Activity {
     public static final String TAG = "BeBrave";
+    public static final int NOTIFICATION_EMERGENCY_REPORT_ID = 2;
 
     private SubmitProcessButton reportButton;
     private GestureDetector gestureDetector;
     //booleans used for the progress button actions
     private boolean pressedUp = false;
     private int progress;
+    private Notification.Builder builder;
+    private NotificationManager notificationManager;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -98,7 +106,7 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle translateBundle = ActivityOptions.makeCustomAnimation(this, R.anim.activity_right_open_translate, R.anim.activity_right_close_translate).toBundle();
-        this.startActivity(intent , translateBundle);
+        this.startActivity(intent, translateBundle);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -107,7 +115,7 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, ShareWalkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle translateBundle = ActivityOptions.makeCustomAnimation(this, R.anim.activity_left_open_translate, R.anim.activity_left_close_translate).toBundle();
-        this.startActivity(intent , translateBundle);
+        this.startActivity(intent, translateBundle);
     }
 
     @Override
@@ -160,6 +168,7 @@ public class MainActivity extends Activity {
     }
 
     private void sendReport() {
+
         String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
 
         // Get Android school
@@ -187,6 +196,25 @@ public class MainActivity extends Activity {
         Log.i(TAG, "About to send the report...");
         new CreateReportsTask(this).execute(report);
         Log.i(TAG, "Report sent.");
+
+        // Create notification for emergency report
+        builder = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
+                .setContentText(getResources().getString(R.string.notification_share_walk_text))
+                .setOngoing(true)
+                .setPriority(NOTIFICATION_EMERGENCY_REPORT_ID);
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_EMERGENCY_REPORT_ID, builder.build());
     }
 
     public void updateButtonProgress() {
