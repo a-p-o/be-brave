@@ -1,5 +1,6 @@
 package com.ordonezalex.bebrave.tasks;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,6 +9,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import com.ordonezalex.bebrave.MainActivity;
@@ -38,6 +40,7 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
 
     private Notification.Builder builder;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public CreateReportsTask(Activity activity) {
 
         super();
@@ -70,7 +73,6 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
         try {
             ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, requestEntity, String.class);
             result = response.getBody();
-
             return result;
         } catch (HttpServerErrorException e) {
             Log.wtf(TAG, e.getResponseBodyAsString());
@@ -81,6 +83,7 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onPostExecute(String response) {
 
