@@ -2,6 +2,7 @@ package com.ordonezalex.bebrave;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -91,18 +92,22 @@ public class MainActivity extends Activity {
     }
 
     //method for swiping left
-    private void onLeftSwipe() {
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void onRightSwipe() {
         // Open profile when swiped left
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(intent);
+        Bundle translateBundle = ActivityOptions.makeCustomAnimation(this, R.anim.activity_right_open_translate, R.anim.activity_right_close_translate).toBundle();
+        this.startActivity(intent , translateBundle);
     }
 
-    private void onRightSwipe() {
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void onLeftSwipe() {
         // Open share walk when swiped right
         Intent intent = new Intent(MainActivity.this, ShareWalkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(intent);
+        Bundle translateBundle = ActivityOptions.makeCustomAnimation(this, R.anim.activity_left_open_translate, R.anim.activity_left_close_translate).toBundle();
+        this.startActivity(intent , translateBundle);
     }
 
     @Override
