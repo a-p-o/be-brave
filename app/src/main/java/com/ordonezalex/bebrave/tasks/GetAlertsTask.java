@@ -1,7 +1,6 @@
 package com.ordonezalex.bebrave.tasks;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Notification;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -69,6 +68,8 @@ public class GetAlertsTask extends AsyncTask<Void, Void, Alert[]> {
                 this.activity.titles.add(alert.getTitle());
             }
         }
+
+        this.activity.setAlerts(alerts);
 
         // Add Alerts to adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.activity, android.R.layout.simple_list_item_1, this.activity.titles);
