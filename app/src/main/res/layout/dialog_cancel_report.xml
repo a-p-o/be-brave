@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:id="@+id/security_pin"
+        android:id="@+id/security_pin_edit_text"
         android:inputType="numberPassword"
         android:maxLength="4"
         android:textSize="24sp"
