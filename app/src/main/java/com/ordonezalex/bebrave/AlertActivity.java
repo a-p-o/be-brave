@@ -1,16 +1,17 @@
 package com.ordonezalex.bebrave;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ordonezalex.bebrave.dialogs.CancelReportDialogFragment;
 import com.ordonezalex.bebrave.tasks.CreateReportsTask;
 import com.ordonezalex.bebrave.tasks.GetAlertsTask;
 import com.ordonezalex.bebrave.util.Alert;
@@ -26,11 +27,11 @@ import java.util.concurrent.ExecutionException;
 public class AlertActivity extends Activity {
 
     public final static String TAG = "BeBrave";
-    public  List<String> titles;
+    public List<String> titles;
     public ListView alertListView;
     private Alert[] alerts;
-    public static long userSchoolId = 3; // Will be pulled from user
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert?School=" + userSchoolId;
+    public static long userSchoolId = 2; // Will be pulled from user
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/alert?School=" + userSchoolId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +45,22 @@ public class AlertActivity extends Activity {
     }
 
     private void populateAlerts() {
+
         titles = new ArrayList<String>();
         new GetAlertsTask(this).execute();
-
     }
 
     private void alertClicked() {
+
         alertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 TextView textView = (TextView) view;
-                for(Alert alert: alerts){
-                    if(alert.getTitle().equals(textView.getText().toString())){
+                for (Alert alert : alerts) {
+                    if (alert.getTitle().equals(textView.getText().toString())) {
                         sendReport(alert);
+                        cancelReportDialog();
                         break;
                     }
                 }
@@ -64,13 +68,20 @@ public class AlertActivity extends Activity {
         });
     }
 
+    public void cancelReportDialog() {
+
+        Log.i(TAG, "Creating cancel report dialog.");
+        DialogFragment newFragment = new CancelReportDialogFragment();
+        newFragment.show(getFragmentManager(), "CancelReport");
+        Log.i(TAG, "Showed cancel report dialog.");
+    }
+
     private void sendReport(Alert alert) {
         // Start using Spring
-        String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
 
         // Get Android school
         School school = new School();
-        school.setId(3);
+        school.setId(2);
 
         // Get Help me status
         Status status = new Status();
@@ -87,8 +98,8 @@ public class AlertActivity extends Activity {
         report.setSchool(school);
 
         ObjectMapper mapper = new ObjectMapper();
-        try{
-            Log.i(TAG, mapper.writerWithDefaultPrettyPrinter().writeValueAsString(report) );
+        try {
+            Log.i(TAG, mapper.writerWithDefaultPrettyPrinter().writeValueAsString(report));
             String response = new CreateReportsTask(this).execute(report).get();
             Log.wtf(TAG, response);
         } catch (InterruptedException e) {
@@ -103,6 +114,7 @@ public class AlertActivity extends Activity {
     }
 
     public void setAlerts(Alert[] alerts) {
+
         this.alerts = alerts;
     }
 }
