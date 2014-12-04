@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
-import com.ordonezalex.bebrave.App;
-import com.ordonezalex.bebrave.R;
 import com.ordonezalex.bebrave.services.LocationService;
 import com.ordonezalex.bebrave.util.Report;
 
@@ -28,10 +26,11 @@ import org.springframework.web.client.RestTemplate;
 public class CreateReportsTask extends AsyncTask<Report, Void, String> {
 
     public static final String TAG = "BeBrave";
-    private final static String URL = App.getContext().getString(R.string.api_target_base_uri)
-            + "/"
-            + App.getContext().getString(R.string.api_target_version)
-            + "/Report";
+//    private final static String URL = App.getContext().getString(R.string.api_target_base_uri)
+//            + "/"
+//            + App.getContext().getString(R.string.api_target_version)
+//            + "/Report";
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/Report";
     private static final String EXTRA_REPORT_ID = "EXTRA_REPORT_ID";
 
     private Activity activity;
