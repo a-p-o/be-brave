@@ -1,6 +1,7 @@
 package com.ordonezalex.bebrave;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ordonezalex.bebrave.dialogs.CancelReportDialogFragment;
 import com.ordonezalex.bebrave.tasks.CreateReportsTask;
 import com.ordonezalex.bebrave.tasks.GetAlertsTask;
 import com.ordonezalex.bebrave.util.Alert;
@@ -54,9 +56,10 @@ public class AlertActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView textView = (TextView) view;
-                for(Alert alert: alerts){
-                    if(alert.getTitle().equals(textView.getText().toString())){
+                for (Alert alert : alerts) {
+                    if (alert.getTitle().equals(textView.getText().toString())) {
                         sendReport(alert);
+                        cancelReportDialog();
                         break;
                     }
                 }
@@ -64,17 +67,24 @@ public class AlertActivity extends Activity {
         });
     }
 
+    public void cancelReportDialog() {
+        Log.i(TAG, "Creating cancel report dialog.");
+        DialogFragment newFragment = new CancelReportDialogFragment();
+        newFragment.show(getFragmentManager(), "CancelReport");
+        Log.i(TAG, "Showed cancel report dialog.");
+    }
+
     private void sendReport(Alert alert) {
         // Start using Spring
-        String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
+        String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/report";
 
         // Get Android school
         School school = new School();
-        school.setId(3);
+        school.setId(2);
 
         // Get Help me status
         Status status = new Status();
-        status.setId(2);
+        status.setId(1);
 
         // Get textUser User
         User user = new User();

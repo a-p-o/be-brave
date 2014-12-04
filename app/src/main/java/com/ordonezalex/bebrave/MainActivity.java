@@ -3,6 +3,7 @@ package com.ordonezalex.bebrave;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.Application;
 import android.app.DialogFragment;
 import android.app.Notification;
 import android.app.NotificationManager;

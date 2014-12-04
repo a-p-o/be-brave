@@ -147,7 +147,7 @@ public class LocationService extends Service implements GooglePlayServicesClient
             String time = format.format(date);
 
             com.ordonezalex.bebrave.util.Location updateLocation = new com.ordonezalex.bebrave.util.Location(location.getLatitude(), location.getLongitude(), time);
-            new UpdateReportsTask(reportId).execute(updateLocation);
+            new UpdateReportsTask(reportId, this).execute(updateLocation);
             Log.i(TAG, "Location updated.");
 
             Log.i(TAG, "position: " + location.getLatitude() + ", " + location.getLongitude());

@@ -1,10 +1,15 @@
 package com.ordonezalex.bebrave.tasks;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ordonezalex.bebrave.App;
+import com.ordonezalex.bebrave.MainActivity;
 import com.ordonezalex.bebrave.util.Location;
 
 import org.springframework.http.HttpEntity;
@@ -21,12 +26,14 @@ import org.springframework.web.client.RestTemplate;
 public class UpdateReportsTask extends AsyncTask<Location, Void, String> {
     public final static String TAG = "BeBrave";
     private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/Report";
+    private Context context;
     private int reportId;
 
-    public UpdateReportsTask(int reportId) {
+    public UpdateReportsTask(int reportId, Context cxt) {
 
         super();
         this.setReportId(reportId);
+        context = cxt;
     }
 
     @Override
@@ -37,6 +44,8 @@ public class UpdateReportsTask extends AsyncTask<Location, Void, String> {
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(new MediaType("application", "json"));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Log.i(TAG, "the username is: " + prefs.getString("Username", "no username"));
         HttpEntity<Location> requestEntity = new HttpEntity<Location>(location, requestHeaders);
 
         RestTemplate restTemplate = new RestTemplate();

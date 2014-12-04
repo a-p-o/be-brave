@@ -3,8 +3,10 @@ package com.ordonezalex.bebrave.tasks;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.ordonezalex.bebrave.AlertActivity;
@@ -16,6 +18,9 @@ import com.ordonezalex.bebrave.util.Login;
 import com.ordonezalex.bebrave.util.Report;
 import com.ordonezalex.bebrave.util.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -72,5 +77,25 @@ public class LoginTask extends AsyncTask<Login, Void, String> {
             Log.wtf(TAG, e);
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.activity);
+        SharedPreferences.Editor editor = prefs.edit();
+        try {
+
+            JSONObject user = new JSONObject(s);
+            editor.putString("Username" , user.getString("Username"));
+            Log.i(TAG, "Added username: "+user.getString("Username"));
+            editor.putString("SecretToken", user.getString("ClientSecretToken"));
+            Log.i(TAG, "Added secret Token: " + user.getString("ClientSecretToken"));
+            editor.apply();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        super.onPostExecute(s);
     }
 }

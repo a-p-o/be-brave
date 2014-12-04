@@ -3,8 +3,10 @@ package com.ordonezalex.bebrave.tasks;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.ordonezalex.bebrave.services.LocationService;
@@ -84,6 +86,8 @@ public class CreateReportsTask extends AsyncTask<Report, Void, String> {
             JSONObject result = new JSONObject(response);
 
             Log.i(TAG, "Creating location service with report ID " + result.getInt("ID"));
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.activity);
+            Log.i(TAG, "The Logged in user is: "+ prefs.getString("Username", "no Username"));
 
             startLocationServiceIntent.putExtra(EXTRA_REPORT_ID, result.getInt("ID"));
 
