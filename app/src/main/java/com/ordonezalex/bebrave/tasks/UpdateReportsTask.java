@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class UpdateReportsTask extends AsyncTask<Location, Void, String> {
     public final static String TAG = "BeBrave";
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/Report";
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/Report";
     private int reportId;
 
     public UpdateReportsTask(int reportId) {

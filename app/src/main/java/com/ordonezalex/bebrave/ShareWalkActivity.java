@@ -34,7 +34,7 @@ import com.ordonezalex.bebrave.util.Status;
 import com.ordonezalex.bebrave.util.User;
 
 public class ShareWalkActivity extends FragmentActivity {
-    private final static String TAG = "Be-Brave";
+    private final static String TAG = "Be Brave";
 
     private MyReceiver receiver;
     private GoogleMap map;
@@ -42,7 +42,6 @@ public class ShareWalkActivity extends FragmentActivity {
     public static final int NOTIFICATION_SHARE_WALK_REPORT_ID = 1;
     SupportMapFragment mySupportMapFragment;
     private NotificationManager notificationManager;
-    private Notification.Builder builder;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -125,7 +124,7 @@ public class ShareWalkActivity extends FragmentActivity {
         // Create notification for Share Walk
         Intent resultIntent = new Intent(ShareWalkActivity.this, ShareWalkActivity.class);
 
-        builder = new Notification.Builder(ShareWalkActivity.this)
+        Notification.Builder builder = new Notification.Builder(ShareWalkActivity.this)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
                 .setContentText(getResources().getString(R.string.notification_share_walk_text))

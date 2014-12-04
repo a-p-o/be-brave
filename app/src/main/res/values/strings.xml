@@ -3,6 +3,8 @@
 
     <!-- # General -->
     <string name="app_name">Be Brave</string>
+    <string name="api_target_base_uri">http://caffeinatedcm-001-site3.smarterasp.net/api</string>
+    <string name="api_target_version">2</string>
 
     <!-- # ActionBar -->
     <string name="action_settings">Settings</string>
@@ -12,7 +14,7 @@
     <string name="action_login">Login</string>
 
     <!-- # MainActivity -->
-    <string name="title_activity_main">Main Activity</string>
+    <string name="title_activity_main">Be Brave</string>
     <string name="report">Report</string>
     <string name="report_created">Created report</string>
     <string name="report_created_error">Could not create report</string>

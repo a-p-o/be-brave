@@ -24,8 +24,13 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class CreateReportsTask extends AsyncTask<Report, Void, String> {
-    public final static String TAG = "BeBrave";
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/Report";
+
+    public static final String TAG = "BeBrave";
+//    private final static String URL = App.getContext().getString(R.string.api_target_base_uri)
+//            + "/"
+//            + App.getContext().getString(R.string.api_target_version)
+//            + "/Report";
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/Report";
     private static final String EXTRA_REPORT_ID = "EXTRA_REPORT_ID";
 
     private Activity activity;
