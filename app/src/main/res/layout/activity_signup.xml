@@ -16,6 +16,24 @@
 
 
             <EditText
+                android:id="@+id/firstname_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="first name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/lastname_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="last name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <EditText
                 android:id="@+id/username_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,9 +59,33 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:imeOptions="actionUnspecified" />
+
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner_choose_school"
+                android:layout_gravity="center_horizontal" />
+
+            <EditText
+                android:id="@+id/organizational_identifer_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Organizational Identifier"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:imeActionId="@+id/edittext_action_signup"
                 android:imeActionLabel="sign up"
                 android:imeOptions="actionUnspecified" />
+
+           <!-- to choose role if needed
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner_choose_role"
+                android:layout_gravity="center_horizontal" />-->
 
             <Button
                 android:id="@+id/action_button"

@@ -26,12 +26,12 @@
 //    protected String doInBackground(User... users) {
 //
 //        User user;
-//        uesr = users[0];
+//        user = users[0];
 //        Message message = new Message();
 //
 //        HttpHeaders requestHeaders = new HttpHeaders();
 //        requestHeaders.setContentType(new MediaType("application", "json"));
-//        HttpEntity<User> requestEntity = new HttpEntity<User>(users, requestHeaders);
+//        HttpEntity<User> requestEntity = new HttpEntity<User>(user, requestHeaders);
 //
 //        ObjectMapper mapper = new ObjectMapper();
 //
@@ -45,8 +45,6 @@
 //        try {
 //            ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, requestEntity, String.class);
 //            result = response.getBody();
-//        } catch (HttpServerErr orException e) {
-//            Log.wtf(TAG, e.getResponseBodyAsString());
 //        } catch (HttpClientErrorException e) {
 //            Log.wtf(TAG, e);
 //        }

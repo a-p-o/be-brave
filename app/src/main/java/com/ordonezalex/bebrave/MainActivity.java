@@ -133,9 +133,18 @@ public class MainActivity extends Activity {
         } else if (id == R.id.action_alert) {
             openAlert();
             return true;
+        }else if (id == R.id.action_login) {
+            openLogin();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openLogin() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(intent);
     }
 
     private void openProfile() {

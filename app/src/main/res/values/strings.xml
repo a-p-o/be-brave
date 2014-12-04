@@ -9,6 +9,7 @@
     <string name="action_profile">Profile</string>
     <string name="action_report">Report</string>
     <string name="action_alert">Alert</string>
+    <string name="action_login">Login</string>
 
     <!-- # MainActivity -->
     <string name="title_activity_main">Main Activity</string>

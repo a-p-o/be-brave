@@ -29,7 +29,7 @@ public class AlertActivity extends Activity {
     public  List<String> titles;
     public ListView alertListView;
     private Alert[] alerts;
-    public static long userSchoolId = 3; // Will be pulled from user
+    public static long userSchoolId = 2; // Will be pulled from user
     private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert?School=" + userSchoolId;
 
     @Override
