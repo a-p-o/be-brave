@@ -62,14 +62,12 @@ public class MainActivity extends Activity {
 
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        Log.i(TAG, "PRESSED");
                         if (pressedUp == false) {
                             pressedUp = true;
                             new ProgressUpTask().execute();
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        Log.i(TAG, "LET GO");
                         //reset the progress of the button
                         progress = 0;
                         pressedUp = false;
@@ -169,11 +167,9 @@ public class MainActivity extends Activity {
 
     private void sendReport() {
 
-        String url = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/report";
-
         // Get Android school
         School school = new School();
-        school.setId(3);
+        school.setId(2);
 
         // Get Emergency alert
         Alert alert = new Alert();
@@ -181,7 +177,7 @@ public class MainActivity extends Activity {
 
         // Get Open status
         Status status = new Status();
-        status.setId(2);
+        status.setId(1);
 
         // Get Cupcake User
         User user = new User();
@@ -202,8 +198,7 @@ public class MainActivity extends Activity {
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(getResources().getString(R.string.notification_share_walk_title))
                 .setContentText(getResources().getString(R.string.notification_share_walk_text))
-                .setOngoing(true)
-                .setPriority(NOTIFICATION_EMERGENCY_REPORT_ID);
+                .setOngoing(true);
 
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
