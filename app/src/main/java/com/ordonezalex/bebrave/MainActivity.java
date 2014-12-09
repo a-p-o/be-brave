@@ -183,15 +183,15 @@ public class MainActivity extends Activity {
 
         // Get Emergency alert
         Alert alert = new Alert();
-        alert.setId(2);
+        alert.setId(12);
 
         // Get Open status
         Status status = new Status();
-        status.setId(1);
+        status.setId(3);
 
         // Get Cupcake User
         User user = new User();
-        user.setId(2);
+        user.setId(7);
 
         Report report = new Report();
         report.setUser(user);

@@ -22,7 +22,8 @@ import java.util.Collections;
 
 public class GetAlertsTask extends AsyncTask<Void, Void, Alert[]> {
     public final static String TAG = "BeBrave";
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/Alert";
+    public static long userSchoolId = 2; // Will be pulled from user
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v1/alert?School=" + userSchoolId;
     private AlertActivity activity;
     public final static int NOTIFICATION_REPORT_SENDING_ID = 2;
     private Notification.Builder builder;

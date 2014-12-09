@@ -84,11 +84,11 @@ public class AlertActivity extends Activity {
 
         // Get Help me status
         Status status = new Status();
-        status.setId(1);
+        status.setId(3);
 
         // Get textUser User
         User user = new User();
-        user.setId(2);
+        user.setId(7);
 
         Report report = new Report();
         report.setUser(user);

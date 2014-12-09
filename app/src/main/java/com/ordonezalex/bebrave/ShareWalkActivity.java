@@ -95,19 +95,19 @@ public class ShareWalkActivity extends FragmentActivity {
 
         // Get Android school
         School school = new School();
-        school.setId(3);
+        school.setId(2);
 
         // Get Emergency alert
         Alert alert = new Alert();
-        alert.setId(10006);
+        alert.setId(14);
 
         // Get Open status
         Status status = new Status();
-        status.setId(2);
+        status.setId(3);
 
         // Get Cupcake User
         User user = new User();
-        user.setId(2);
+        user.setId(7);
 
         Report report = new Report();
         report.setUser(user);

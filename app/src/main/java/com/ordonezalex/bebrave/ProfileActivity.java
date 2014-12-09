@@ -47,7 +47,7 @@ public class ProfileActivity extends Activity {
     private HttpClient client;
     private JSONObject json;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v0/user";
+    private final static String URL = "http://caffeinatedcm-001-site3.smarterasp.net/api/v2/user/7";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,9 +150,9 @@ public class ProfileActivity extends Activity {
         {
             HttpEntity entity = response.getEntity();
             String data = EntityUtils.toString(entity);
-            JSONArray profiledata = new JSONArray(data);
-            JSONObject profile = profiledata.getJSONObject(0);
-            return profile;
+            JSONObject profiledata = new JSONObject(data);
+            //JSONObject profile = profiledata.getJSONObject(0);
+            return profiledata;
         }
         else
         {
