@@ -72,9 +72,7 @@ public class LoginActivity extends Activity{
 
         new LoginTask(this).execute(login);
 
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(intent);
+
     }
 
 }

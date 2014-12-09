@@ -3,14 +3,17 @@ package com.ordonezalex.bebrave.tasks;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ordonezalex.bebrave.AlertActivity;
 import com.ordonezalex.bebrave.LoginActivity;
+import com.ordonezalex.bebrave.MainActivity;
 import com.ordonezalex.bebrave.R;
 import com.ordonezalex.bebrave.SignUpActivity;
 import com.ordonezalex.bebrave.util.Alert;
@@ -75,6 +78,7 @@ public class LoginTask extends AsyncTask<Login, Void, String> {
             Log.wtf(TAG, e.getResponseBodyAsString());
         } catch (HttpClientErrorException e) {
             Log.wtf(TAG, e);
+            return null;
         }
         return null;
     }
@@ -92,8 +96,16 @@ public class LoginTask extends AsyncTask<Login, Void, String> {
             editor.putString("SecretToken", user.getString("ClientSecretToken"));
             Log.i(TAG, "Added secret Token: " + user.getString("ClientSecretToken"));
             editor.apply();
+
+            Intent intent = new Intent(this.activity, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.activity.startActivity(intent);
         } catch (JSONException e) {
+            Toast.makeText(this.activity, "Error authenticating user", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+        }catch (NullPointerException e )
+        {
+            Toast.makeText(this.activity, "Error authenticating user", Toast.LENGTH_SHORT).show();
         }
 
         super.onPostExecute(s);
