@@ -114,7 +114,7 @@ public class LocationService extends Service implements GooglePlayServicesClient
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
         locationRequest.setFastestInterval(LOCATION_REQUEST_INTERVAL_FASTEST);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setSmallestDisplacement(LOCATION_REQUEST_DISPLACEMENT_MINIMUM);
 
         locationClient.requestLocationUpdates(locationRequest, this, getMainLooper());
